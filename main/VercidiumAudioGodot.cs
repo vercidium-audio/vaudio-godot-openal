@@ -29,7 +29,7 @@ public partial class VercidiumAudio : Node
 
         if (!GodotOpenALEnabled)
         {
-            LogWarning("The godot_openal addon is not found. For best audio quality, ensure godot_openal is enabled and the ALManager autoload is enabled in Project Settings > Globals");
+            LogWarning("The godot-openal addon is not found. For best audio quality, ensure godot-openal is enabled and the ALManager autoload is enabled in Project Settings > Globals");
         }
 
         // Register for device destroyed/recreated callbacks to clean up and recreate reverb effects

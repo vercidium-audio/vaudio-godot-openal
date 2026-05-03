@@ -88,7 +88,7 @@ public partial class VercidiumAudio : Node
 
     public static Action<string> LogError = (message) =>
     {
-        var prefixed = $"[godot_ravaudio-godot-openalytraced_audio] {message}";
+        var prefixed = $"[vaudio-godot-openal] {message}";
 
         Console.Error.WriteLine(prefixed);
         GD.PushError(prefixed);
