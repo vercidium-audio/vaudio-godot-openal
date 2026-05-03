@@ -1,0 +1,30 @@
+global using static vaudio_godot_openal.Extensions;
+global using static vaudio_godot_openal.GlobalHelpers;
+using godot_openal;
+
+namespace vaudio_godot_openal;
+
+internal static class Extensions
+{
+    public static vaudio.Vector3F ToVAudio(Vector3 v) => new(v.X, v.Y, v.Z);
+    public static Vector3 FromVAudio(vaudio.Vector3F v) => new(v.X, v.Y, v.Z);
+
+    public static vaudio.Matrix4F ToVAudio(Transform3D globalTransform)
+    {
+        var basis = globalTransform.Basis;
+        var origin = globalTransform.Origin;
+
+        // Both Godot's Basis and vaudio.Matrix4F are column-major
+        return new vaudio.Matrix4F(
+            basis.X.X, basis.X.Y, basis.X.Z, 0f,
+            basis.Y.X, basis.Y.Y, basis.Y.Z, 0f,
+            basis.Z.X, basis.Z.Y, basis.Z.Z, 0f,
+            origin.X, origin.Y, origin.Z, 1f
+        );
+    }
+
+    public static bool GodotOpenALEnabled => ALManager.instance != null;
+
+    public static void RegisterDeviceRecreatedCallback(Action callback) => ALManager.instance?.RegisterDeviceRecreatedCallback(callback);
+    public static void RegisterDeviceDestroyedCallback(Action callback) => ALManager.instance?.RegisterDeviceDestroyedCallback(callback);
+}

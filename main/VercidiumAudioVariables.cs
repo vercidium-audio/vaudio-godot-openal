@@ -1,0 +1,36 @@
+namespace vaudio_godot_openal;
+
+public partial class VercidiumAudio : Node
+{
+    public const string PRIMITIVE_META_KEY = "vercidium_audio_primitive";
+    public const string MATERIAL_META_KEY = "vercidium_audio_material";
+
+    public vaudio.RaytracingContext context;
+    public VercidiumAudioEmitter listener;
+
+    public ALFilter ambientFilter;
+    public ALReverbEffect listenerReverbEffect;
+    public List<ALReverbEffect> groupedReverbEffects = [];
+
+    Dictionary<string, vaudio.MaterialType> DefaultMaterialDict = new()
+    {
+        { "air", vaudio.MaterialType.Air },
+        { "brick", vaudio.MaterialType.Brick },
+        { "cloth", vaudio.MaterialType.Cloth },
+        { "concrete", vaudio.MaterialType.Concrete },
+        { "concretepolished", vaudio.MaterialType.ConcretePolished },
+        { "dirt", vaudio.MaterialType.Dirt },
+        { "grass", vaudio.MaterialType.Grass },
+        { "ice", vaudio.MaterialType.Ice },
+        { "leaf", vaudio.MaterialType.Leaf },
+        { "marble", vaudio.MaterialType.Marble },
+        { "metal", vaudio.MaterialType.Metal },
+        { "mud", vaudio.MaterialType.Mud },
+        { "rock", vaudio.MaterialType.Rock },
+        { "sand", vaudio.MaterialType.Sand },
+        { "snow", vaudio.MaterialType.Snow },
+        { "tree", vaudio.MaterialType.Tree },
+        { "woodindoor", vaudio.MaterialType.WoodIndoor },
+        { "woodoutdoor", vaudio.MaterialType.WoodOutdoor },
+    };
+}

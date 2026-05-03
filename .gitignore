@@ -1,0 +1,4 @@
+# Ignore Godot files
+.godot/
+*.uid
+*.import

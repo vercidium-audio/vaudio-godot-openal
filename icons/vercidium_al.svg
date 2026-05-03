@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="551.75781"
+   height="440.00003"
+   viewBox="0 0 551.75781 440.00003"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="vercidium_al.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#19212c"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="px"
+     inkscape:showpageshadow="false"
+     showborder="true"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="33.941125"
+     inkscape:cy="272.2361"
+     inkscape:window-width="3840"
+     inkscape:window-height="2066"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:deskcolor="#19212c">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2089"
+       originx="683.17242"
+       originy="582.0387" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <rect
+       x="-101.82337"
+       y="1066.317"
+       width="1347.7455"
+       height="745.29053"
+       id="rect1153" />
+    <rect
+       x="-101.82337"
+       y="1066.317"
+       width="1347.7455"
+       height="745.29053"
+       id="rect1211" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(683.17242,582.0387)">
+    <path
+       id="path41740-2-1-5-4"
+       style="color:#000000;display:inline;fill:#85ffa4;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       d="M -646.45758 -582.0387 A 36.722649 36.722649 0 0 0 -680.10797 -530.63245 L -588.02203 -319.60706 C -575.81607 -352.83962 -563.6084 -386.07169 -551.40289 -419.30432 L -590.37554 -508.59925 L -512.10797 -508.59925 L -495.47125 -470.47815 L -440.15679 -470.47815 L -427.75054 -498.90393 L -454.41461 -560.00745 A 36.722649 36.722649 0 0 0 -488.06695 -582.0387 L -646.45758 -582.0387 z M -326.53375 -582.0387 A 36.722649 36.722649 0 0 0 -360.17633 -560.00745 L -390.50054 -490.52698 L -399.2525 -470.47815 L -383.50836 -470.47815 C -378.66474 -457.2483 -373.82083 -444.01852 -368.97711 -430.7887 L -368.97711 -470.47815 L -319.12359 -470.47815 L -302.49273 -508.59925 L -224.20758 -508.59925 L -240.84234 -470.47815 L -177.28765 -470.47815 L -177.28765 -432.53089 L -134.47906 -530.63245 A 36.722649 36.722649 0 0 0 -168.12554 -582.0387 L -326.53375 -582.0387 z " />
+    <path
+       id="text1151"
+       style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:600px;line-height:1.25;font-family:'Averta Std PE';-inkscape-font-specification:'Averta Std PE Ultra-Bold';white-space:pre;shape-inside:url(#rect1153);fill:#ffffff;stroke-width:0.999997"
+       d="m -487.84785,-406.47901 -97.21142,264.44027 h 65.17913 l 15.64247,-47.67475 h 92.36791 l 15.64248,47.67475 h 64.80675 l -96.83646,-264.44027 z m 182.87135,0 v 264.44027 h 173.56189 v -55.49471 h -109.87228 v -208.94556 z m -153.4483,75.23591 h 0.74476 l 29.42305,89.38887 h -59.21849 z"
+       inkscape:transform-center-x="228.58706"
+       inkscape:transform-center-y="-132.22905" />
+  </g>
+</svg>
