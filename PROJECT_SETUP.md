@@ -1,9 +1,5 @@
 ## Godot Raytraced Audio
 
-References:
-- [godot-openal repo](https://github.com/vercidium-audio/godot-openal)
-- [Vercidum Audio documentation](https://docs.vercidium.com/raytraced-audio/v110/Getting+Started)
-
 ### Step 1 - Configure Your Godot Project
 
 Open your Godot project and click `Project > Tools > C# > Create C# solution`.
