@@ -236,34 +236,34 @@ public partial class VercidiumAudioEmitter : Node3D
     [ExportGroup("Raytracing Quality")]
 
     int _ReverbRayCount = 128;
-    [Export(PropertyHint.Range, "0,1024,1")]
+    [Export]
     public int ReverbRayCount
     {
         get => _ReverbRayCount;
         set
         {
-            _ReverbRayCount = value;
+            _ReverbRayCount = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.ReverbRayCount = value;
+                emitter.ReverbRayCount = _ReverbRayCount;
                 emitter.ReverbEnergyCap = emitter.ReverbRayCount * emitter.ReverbBounceCount * _ReverbEnergyCap;
             }
         }
     }
 
     int _ReverbBounceCount = 64;
-    [Export(PropertyHint.Range, "1,128,1")]
+    [Export]
     public int ReverbBounceCount
     {
         get => _ReverbBounceCount;
         set
         {
-            _ReverbBounceCount = value;
+            _ReverbBounceCount = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.ReverbBounceCount = value;
+                emitter.ReverbBounceCount = _ReverbBounceCount;
                 emitter.ReverbEnergyCap = emitter.ReverbRayCount * emitter.ReverbBounceCount * _ReverbEnergyCap;
             }
         }
@@ -271,39 +271,40 @@ public partial class VercidiumAudioEmitter : Node3D
 
 
     int _MaxEchogramTime = 1000;
-    [Export(PropertyHint.Range, "1,5000,1")]
+    [Export]
     public int MaxEchogramTime
     {
         get => _MaxEchogramTime;
         set
         {
-            _MaxEchogramTime = value;
+            _MaxEchogramTime = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.MaxEchogramTime = value;
+                emitter.MaxEchogramTime = _MaxEchogramTime;
             }
         }
     }
 
     int _EchogramGranularity = 10;
-    [Export(PropertyHint.Range, "1,200,1")]
+    [Export]
     public int EchogramGranularity
     {
         get => _EchogramGranularity;
         set
         {
-            _EchogramGranularity = value;
+            _EchogramGranularity = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.EchogramGranularity = value;
+                emitter.EchogramGranularity = _EchogramGranularity;
             }
         }
     }
 
     float _ReverbEnergyCap = 0.05f;
-    [Export(PropertyHint.Range, "0,1")] public float ReverbEnergyCap
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    public float ReverbEnergyCap
     { 
         get => _ReverbEnergyCap;
         set
@@ -318,120 +319,156 @@ public partial class VercidiumAudioEmitter : Node3D
     }
 
     int _OcclusionRayCount = 128;
-    [Export(PropertyHint.Range, "0,1024,1")] public int OcclusionRayCount
+    [Export]
+    public int OcclusionRayCount
     { 
         get => _OcclusionRayCount;
         set
         {
-            _OcclusionRayCount = value;
+            _OcclusionRayCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.OcclusionRayCount = value;
+                emitter.OcclusionRayCount = _OcclusionRayCount;
         }
     }
     
     int _OcclusionBounceCount = 8;
-    [Export(PropertyHint.Range, "1,128,1")] public int OcclusionBounceCount
+    [Export]
+    public int OcclusionBounceCount
     { 
         get => _OcclusionBounceCount;
         set
         {
-            _OcclusionBounceCount = value;
+            _OcclusionBounceCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.OcclusionBounceCount = value;
+                emitter.OcclusionBounceCount = _OcclusionBounceCount;
         }
     }
 
     int _PermeationRayCount = 128;
-    [Export(PropertyHint.Range, "0,1024,1")] public int PermeationRayCount
+    [Export]
+    public int PermeationRayCount
     { 
         get => _PermeationRayCount;
         set
         {
-            _PermeationRayCount = value;
+            _PermeationRayCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.PermeationRayCount = value;
+                emitter.PermeationRayCount = _PermeationRayCount;
         }
     }
     
     int _PermeationBounceCount = 4;
-    [Export(PropertyHint.Range, "1,128,1")] public int PermeationBounceCount
+    [Export]
+    public int PermeationBounceCount
     { 
         get => _PermeationBounceCount;
         set
         {
-            _PermeationBounceCount = value;
+            _PermeationBounceCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.PermeationBounceCount = value;
+                emitter.PermeationBounceCount = _PermeationBounceCount;
+        }
+    }
+
+    int _AmbientOcclusionRayCount = 128;
+    [Export]
+    public int AmbientOcclusionRayCount
+    { 
+        get => _AmbientOcclusionRayCount;
+        set
+        {
+            _AmbientOcclusionRayCount = Math.Max(0, value);
+
+            if (emitter != null)
+                emitter.AmbientOcclusionRayCount = _AmbientOcclusionRayCount;
+        }
+    }
+    
+    int _AmbientOcclusionBounceCount = 4;
+    [Export]
+    public int AmbientOcclusionBounceCount
+    { 
+        get => _AmbientOcclusionBounceCount;
+        set
+        {
+            _AmbientOcclusionBounceCount = Math.Max(0, value);
+
+            if (emitter != null)
+                emitter.AmbientOcclusionBounceCount = _AmbientOcclusionBounceCount;
         }
     }
 
     int _AmbientPermeationRayCount = 128;
-    [Export(PropertyHint.Range, "0,1024,1")] public int AmbientPermeationRayCount
+    [Export]
+    public int AmbientPermeationRayCount
     { 
         get => _AmbientPermeationRayCount;
         set
         {
-            _AmbientPermeationRayCount = value;
+            _AmbientPermeationRayCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.AmbientPermeationRayCount = value;
+                emitter.AmbientPermeationRayCount = _AmbientPermeationRayCount;
         }
     }
     
-    int _AmbientPermeationBounceCount = 4;
-    [Export(PropertyHint.Range, "1,128,1")] public int AmbientPermeationBounceCount
+    int _AmbientPermeationBounceCount = 2;
+    [Export]
+    public int AmbientPermeationBounceCount
     { 
         get => _AmbientPermeationBounceCount;
         set
         {
-            _AmbientPermeationBounceCount = value;
+            _AmbientPermeationBounceCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.AmbientPermeationBounceCount = value;
+                emitter.AmbientPermeationBounceCount = _AmbientPermeationBounceCount;
         }
     }
 
     int _VisualisationRayCount = 0;
-    [Export(PropertyHint.Range, "0,1024,1")] public int VisualisationRayCount
+    [Export]
+    public int VisualisationRayCount
     { 
         get => _VisualisationRayCount;
         set
         {
-            _VisualisationRayCount = value;
+            _VisualisationRayCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.VisualisationRayCount = value;
+                emitter.VisualisationRayCount = _VisualisationRayCount;
         }
     }
 
     int _VisualisationBounceCount = 0;
-    [Export(PropertyHint.Range, "0,128,1")]
+    [Export]
     public int VisualisationBounceCount
     {
         get => _VisualisationBounceCount;
         set
         {
-            _VisualisationBounceCount = value;
+            _VisualisationBounceCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.VisualisationBounceCount = value;
+                emitter.VisualisationBounceCount = _VisualisationBounceCount;
         }
     }
     
     int _VisualisationUpdateFrequency = 500;
-    [Export(PropertyHint.Range, "50,1000,50")] public int VisualisationUpdateFrequency
+    [Export]
+    public int VisualisationUpdateFrequency
     { 
         get => _VisualisationUpdateFrequency;
         set
         {
-            _VisualisationUpdateFrequency = value;
+            _VisualisationUpdateFrequency = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.VisualisationUpdateFrequency = value;
+                emitter.VisualisationUpdateFrequency = _VisualisationUpdateFrequency;
         }
     }
 }

@@ -7,7 +7,8 @@ public partial class VercidiumAudio : Node
     [ExportGroup("World Bounds")]
 
     private Vector3 _worldPosition = new(-100, 0, -100);
-    [Export] public Vector3 WorldPosition
+    [Export]
+    public Vector3 WorldPosition
     { 
         get => _worldPosition;
         set
@@ -34,15 +35,16 @@ public partial class VercidiumAudio : Node
     }
 
     float _MetersPerUnit = 1;
-    [Export(PropertyHint.Range, "0.01,100")] public float MetersPerUnit
+    [Export]
+    public float MetersPerUnit
     { 
         get => _MetersPerUnit;
         set
         {
-            _MetersPerUnit = value;
+            _MetersPerUnit = MathF.Max(0, value);
 
             if (context != null)
-                context.MetersPerUnit = value;
+                context.MetersPerUnit = _MetersPerUnit;
         }
     }
 
@@ -50,15 +52,16 @@ public partial class VercidiumAudio : Node
     [ExportGroup("EAX")]
 
     int _maximumGroupedEAXCount = 3;
-    [Export(PropertyHint.Range, "1,16,1")] public int MaximumGroupedEAXCount
+    [Export]
+    public int MaximumGroupedEAXCount
     { 
         get => _maximumGroupedEAXCount;
         set
         {
-            _maximumGroupedEAXCount = value;
+            _maximumGroupedEAXCount = Math.Max(0, value);
 
             if (context != null)
-                context.MaximumGroupedEAXCount = value;
+                context.MaximumGroupedEAXCount = _maximumGroupedEAXCount;
         }
     }
 
@@ -66,7 +69,8 @@ public partial class VercidiumAudio : Node
     [ExportGroup("Rendering")]
 
     bool _renderingEnabled = true;
-    [Export] public bool RenderingEnabled
+    [Export]
+    public bool RenderingEnabled
     {
         get => _renderingEnabled;
         set

@@ -31,73 +31,138 @@ public partial class VercidiumAudioSource : ALSource3D
     }
 
     [ExportGroup("Raytracing Quality")]
-
+    
     int _ReverbRayCount = 32;
-    [Export(PropertyHint.Range, "0,1024,1")]
+    [Export]
     public int ReverbRayCount
     {
         get => _ReverbRayCount;
         set
         {
-            _ReverbRayCount = value;
+            _ReverbRayCount = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.ReverbRayCount = value;
+                emitter.ReverbRayCount = _ReverbRayCount;
             }
         }
     }
 
     int _ReverbBounceCount = 64;
-    [Export(PropertyHint.Range, "1,128,1")]
+    [Export]
     public int ReverbBounceCount
     {
         get => _ReverbBounceCount;
         set
         {
-            _ReverbBounceCount = value;
+            _ReverbBounceCount = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.ReverbBounceCount = value;
+                emitter.ReverbBounceCount = _ReverbBounceCount;
+            }
+        }
+    }
+
+    int _AmbientOcclusionRayCount = 0;
+    [Export]
+    public int AmbientOcclusionRayCount
+    {
+        get => _AmbientOcclusionRayCount;
+        set
+        {
+            _AmbientOcclusionRayCount = Math.Max(0, value);
+
+            if (emitter != null)
+            {
+                emitter.AmbientOcclusionRayCount = _AmbientOcclusionRayCount;
+            }
+        }
+    }
+
+    int _AmbientOcclusionBounceCount = 0;
+    [Export]
+    public int AmbientOcclusionBounceCount
+    {
+        get => _AmbientOcclusionBounceCount;
+        set
+        {
+            _AmbientOcclusionBounceCount = Math.Max(0, value);
+
+            if (emitter != null)
+            {
+                emitter.AmbientOcclusionBounceCount = _AmbientOcclusionBounceCount;
+            }
+        }
+    }
+
+    int _AmbientPermeationRayCount = 0;
+    [Export]
+    public int AmbientPermeationRayCount
+    {
+        get => _AmbientPermeationRayCount;
+        set
+        {
+            _AmbientPermeationRayCount = Math.Max(0, value);
+
+            if (emitter != null)
+            {
+                emitter.AmbientOcclusionRayCount = _AmbientPermeationRayCount;
+            }
+        }
+    }
+
+    int _AmbientPermeationBounceCount = 0;
+    [Export]
+    public int AmbientPermeationBounceCount
+    {
+        get => _AmbientPermeationBounceCount;
+        set
+        {
+            _AmbientPermeationBounceCount = Math.Max(0, value);
+
+            if (emitter != null)
+            {
+                emitter.AmbientPermeationBounceCount = _AmbientPermeationBounceCount;
             }
         }
     }
 
     int _MaxEchogramTime = 1000;
-    [Export(PropertyHint.Range, "1,5000,1")]
+    [Export]
     public int MaxEchogramTime
     {
         get => _MaxEchogramTime;
         set
         {
-            _MaxEchogramTime = value;
+            _MaxEchogramTime = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.MaxEchogramTime = value;
+                emitter.MaxEchogramTime = _MaxEchogramTime;
             }
         }
     }
 
     int _EchogramGranularity = 10;
-    [Export(PropertyHint.Range, "1,200,1")]
+    [Export]
     public int EchogramGranularity
     {
         get => _EchogramGranularity;
         set
         {
-            _EchogramGranularity = value;
+            _EchogramGranularity = Math.Max(0, value);
 
             if (emitter != null)
             {
-                emitter.EchogramGranularity = value;
+                emitter.EchogramGranularity = _EchogramGranularity;
             }
         }
     }
 
     float _ReverbEnergyCap = 0.05f;
-    [Export(PropertyHint.Range, "0,1")] public float ReverbEnergyCap
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    public float ReverbEnergyCap
     {
         get => _ReverbEnergyCap;
         set
@@ -112,44 +177,50 @@ public partial class VercidiumAudioSource : ALSource3D
     }
 
     int _VisualisationRayCount = 0;
-    [Export(PropertyHint.Range, "0,128,1")]
+    [Export]
     public int VisualisationRayCount
     {
         get => _VisualisationRayCount;
         set
         {
-            _VisualisationRayCount = value;
+            _VisualisationRayCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.VisualisationRayCount = value;
+            {
+                emitter.VisualisationRayCount = _VisualisationRayCount;
+            }
         }
     }
 
     int _VisualisationBounceCount = 0;
-    [Export(PropertyHint.Range, "0,32,1")]
+    [Export]
     public int VisualisationBounceCount
     {
         get => _VisualisationBounceCount;
         set
         {
-            _VisualisationBounceCount = value;
+            _VisualisationBounceCount = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.VisualisationBounceCount = value;
+            {
+                emitter.VisualisationBounceCount = _VisualisationBounceCount;
+            }
         }
     }
 
     int _VisualisationUpdateFrequency = 500;
-    [Export(PropertyHint.Range, "50,1000,50")]
+    [Export]
     public int VisualisationUpdateFrequency
     {
         get => _VisualisationUpdateFrequency;
         set
         {
-            _VisualisationUpdateFrequency = value;
+            _VisualisationUpdateFrequency = Math.Max(0, value);
 
             if (emitter != null)
-                emitter.VisualisationUpdateFrequency = value;
+            {
+                emitter.VisualisationUpdateFrequency = _VisualisationUpdateFrequency;
+            }
         }
     }
 
@@ -200,6 +271,7 @@ public partial class VercidiumAudioSource : ALSource3D
             // Disable all but reverb
             OcclusionRayCount = 0,
             PermeationRayCount = 0,
+            AmbientOcclusionRayCount = 0,
             AmbientPermeationRayCount = 0,
 
             // Less rays for individual sources

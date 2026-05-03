@@ -23,6 +23,8 @@ public partial class VercidiumAudio : Node
             OcclusionBounceCount = node.OcclusionBounceCount,
             PermeationRayCount = node.PermeationRayCount,
             PermeationBounceCount = node.PermeationBounceCount,
+            AmbientOcclusionRayCount = node.AmbientOcclusionRayCount,
+            AmbientOcclusionBounceCount = node.AmbientOcclusionBounceCount,
             AmbientPermeationRayCount = node.AmbientPermeationRayCount,
             AmbientPermeationBounceCount = node.AmbientPermeationBounceCount,
             VisualisationRayCount = node.VisualisationRayCount,

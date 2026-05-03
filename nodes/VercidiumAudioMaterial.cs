@@ -95,7 +95,8 @@ public partial class VercidiumAudioMaterial : Node
     /// <summary>
     /// Low-frequency absorption coefficient (0.0 to 1.0)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0,1.0")] public float AbsorptionLF
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    public float AbsorptionLF
     { 
         get => _AbsorptionLF;
         set
@@ -163,7 +164,7 @@ public partial class VercidiumAudioMaterial : Node
     /// <summary>
     /// Low-frequency transmission in dB/m (0.0 or greater)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0,1000.0")]
+    [Export(PropertyHint.Range, "0.0,10000.0")]
     public float TransmissionLF
     {
         get => _TransmissionLF;
@@ -186,7 +187,7 @@ public partial class VercidiumAudioMaterial : Node
     /// <summary>
     /// High-frequency transmission in dB/m (0.0 or greater)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0,1000.0")]
+    [Export(PropertyHint.Range, "0.0,10000.0")]
     public float TransmissionHF
     {
         get => _TransmissionHF;
@@ -255,7 +256,8 @@ public partial class VercidiumAudioMaterial : Node
     /// <summary>
     /// Debug color for the VAudio debug renderer
     /// </summary>
-    [Export] public Color DebugColor
+    [Export]
+    public Color DebugColor
     { 
         get => _DebugColor;        
         set
