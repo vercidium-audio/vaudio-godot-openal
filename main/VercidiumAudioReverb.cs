@@ -37,22 +37,15 @@ public partial class VercidiumAudio : Node
     void OnReverbUpdated()
     {
         // Update ambient gain (if reverb enabled)
-        if (listener.ProcessedReverb != null)
+        if (listener.AmbientFilter != null)
         {
-            var ambientClarityLF = listener.ProcessedReverb.OutsidePercent;
-            var ambientClarityHF = listener.ProcessedReverb.OutsidePercent;
+            var ambientGainLF = listener.AmbientFilter.GainLF;
+            var ambientGainHF = listener.AmbientFilter.GainLF;
             
-            // * 2 because half go into the terrain
-            ambientClarityLF += listener.AmbientPermeationGainLF;
-            ambientClarityHF += listener.AmbientPermeationGainHF;
-
-            ambientClarityLF = MathF.Min(1, ambientClarityLF);
-            ambientClarityHF = MathF.Min(1, ambientClarityHF);
-
             if (GodotOpenALEnabled)
             {
-                ambientFilter ??= new(ambientClarityLF, ambientClarityHF);
-                ambientFilter.SetGain(ambientClarityLF, ambientClarityHF);
+                ambientFilter ??= new(ambientGainLF, ambientGainHF);
+                ambientFilter.SetGain(ambientGainLF, ambientGainHF);
             }
         }
 

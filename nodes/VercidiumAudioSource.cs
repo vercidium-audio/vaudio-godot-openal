@@ -277,7 +277,7 @@ public partial class VercidiumAudioSource : ALSource3D
         if (other.HasRaytracedTarget(emitter.emitter))
         {
             var vaudioFilter = other.GetTargetFilter(emitter.emitter);
-            UpdateFilter(vaudioFilter.gainLF, vaudioFilter.gainHF, true);
+            UpdateFilter(vaudioFilter.GainLF, vaudioFilter.GainHF, true);
         }
     }
 

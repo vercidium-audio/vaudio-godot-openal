@@ -61,7 +61,6 @@ func _enter_tree():
 		ProjectSettings.settings_changed.connect(_on_settings_changed)
 
 	print("[vaudio-godot-openal] Vercidium Audio (vaudio) plugin enabled")
-	print("[vaudio-godot-openal] Note: the *Source* nodes require the 'godot_openal' plugin")
 
 func _exit_tree():
 	remove_custom_type("VercidiumAudio")
@@ -121,6 +120,6 @@ func _setup_project():
 		push_warning("[vaudio-godot-openal] Added vaudio references to ", ProjectSettings.globalize_path(csproj_path), " - please replace 'path/to/your/vaudio/folder' with your actual vaudio path, then disable and enable the VercidiumAudio plugin")
 
 func _enable_plugin():
-    if not DirAccess.dir_exists_absolute("res://addons/godot-openal"):
-        push_error("[vaudio-godot-openal] the 'godot-openal' plugin is required. Clone it from git clone https://github.com/vercidium-audio/godot-openal")
-        get_editor_interface().set_plugin_enabled("vaudio-godot-openal", false)
+	if not DirAccess.dir_exists_absolute("res://addons/godot-openal"):
+		push_error("[vaudio-godot-openal] The 'godot-openal' plugin is required. Clone it from https://github.com/vercidium-audio/godot-openal and enable it first.")
+		get_editor_interface().set_plugin_enabled("vaudio-godot-openal", false)

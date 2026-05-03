@@ -214,7 +214,7 @@ public partial class VercidiumAudio : Node
 
         var transform = ToVAudio(csgPolygon.GlobalTransform);
 
-        vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform, true);
+        vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform);
 
         context.AddPrimitive(prim);
 
@@ -250,7 +250,7 @@ public partial class VercidiumAudio : Node
 
         var transform = ToVAudio(csgMesh.GlobalTransform);
 
-        vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform, true);
+        vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform);
 
         context.AddPrimitive(prim);
 
@@ -366,7 +366,7 @@ public partial class VercidiumAudio : Node
 
             if (triangles.Count > 0)
             {
-                prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform, true);
+                prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform);
                 context.AddPrimitive(prim);
             }
         }
@@ -377,7 +377,7 @@ public partial class VercidiumAudio : Node
 
             if (triangles.Count > 0)
             {
-                prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform, true);
+                prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform);
                 context.AddPrimitive(prim);
             }
         }
@@ -388,7 +388,7 @@ public partial class VercidiumAudio : Node
 
             if (triangles.Count > 0)
             {
-                prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform, true);
+                prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform);
                 context.AddPrimitive(prim);
             }
         }
@@ -503,7 +503,7 @@ public partial class VercidiumAudio : Node
 
         var transform = ToVAudio(meshInstance.GlobalTransform);
 
-        vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform, true)
+        vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform)
         {
             // TODO - make this a metadata / inspector flag in godot
             supportsPermeation = true

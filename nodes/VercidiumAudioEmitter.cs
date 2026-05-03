@@ -120,14 +120,14 @@ public partial class VercidiumAudioEmitter : Node3D
             if (vercidiumAudio.listener.HasRaytracedTarget(this))
             {
                 var vaudioFilter = vercidiumAudio.listener.GetTargetFilter(this);
-                filter?.SetGain(vaudioFilter.gainLF, vaudioFilter.gainHF);
+                filter?.SetGain(vaudioFilter.GainLF, vaudioFilter.GainHF);
             }
         }
     }
 
     public bool HasRaytracedTarget(VercidiumAudioEmitter target) => emitter.HasRaytracedTarget(target.emitter);
-    public vaudio.AudioFilter GetTargetFilter(VercidiumAudioEmitter target) => emitter.GetTargetFilter(target.emitter);
-    public vaudio.AudioFilter GetTargetFilter(vaudio.Emitter target) => emitter.GetTargetFilter(target);
+    public vaudio.LowPassFilter GetTargetFilter(VercidiumAudioEmitter target) => emitter.GetTargetFilter(target.emitter);
+    public vaudio.LowPassFilter GetTargetFilter(vaudio.Emitter target) => emitter.GetTargetFilter(target);
 
     public override void _ExitTree()
     {
@@ -152,8 +152,7 @@ public partial class VercidiumAudioEmitter : Node3D
     public vaudio.RawReverbResults RawReverb => emitter.RawReverb;
     public vaudio.ProcessedReverbResults ProcessedReverb => emitter.ProcessedReverb;
     public vaudio.EAXReverbResults EAX => emitter.EAX;
-    public float AmbientPermeationGainLF => emitter.AmbientPermeationGainLF;
-    public float AmbientPermeationGainHF => emitter.AmbientPermeationGainHF;
+    public vaudio.LowPassFilter AmbientFilter => emitter.AmbientFilter;
     public int GroupedEAXIndex => emitter.GroupedEAXIndex;
 
     bool _IsMainListener;
