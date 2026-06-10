@@ -6,31 +6,31 @@ public partial class VercidiumAudio : Node
 
     [ExportGroup("World Bounds")]
 
-    private Vector3 _worldPosition = new(-100, 0, -100);
+    private Vector3 _position = new(-100, 0, -100);
     [Export]
-    public Vector3 WorldPosition
+    public Vector3 Position
     { 
-        get => _worldPosition;
+        get => _position;
         set
         {
-            _worldPosition = value;
+            _position = value;
 
-            if (context != null)
-                context.WorldPosition = ToVAudio(value);
+            if (world != null)
+                world.Position = ToVAudio(value);
         }
     }
 
-    Vector3 _worldSize = new(200, 100, 200);
+    Vector3 _size = new(200, 100, 200);
     [Export]
-    public Vector3 WorldSize
+    public Vector3 Size
     {
-        get => _worldSize;
+        get => _size;
         set
         {
-            _worldSize = value;
+            _size = value;
 
-            if (context != null)
-                context.WorldSize = ToVAudio(value);
+            if (world != null)
+                world.Size = ToVAudio(value);
         }
     }
 
@@ -43,8 +43,8 @@ public partial class VercidiumAudio : Node
         {
             _MetersPerUnit = MathF.Max(0, value);
 
-            if (context != null)
-                context.MetersPerUnit = _MetersPerUnit;
+            if (world != null)
+                world.MetersPerUnit = _MetersPerUnit;
         }
     }
 
@@ -60,8 +60,8 @@ public partial class VercidiumAudio : Node
         {
             _maximumGroupedEAXCount = Math.Max(0, value);
 
-            if (context != null)
-                context.MaximumGroupedEAXCount = _maximumGroupedEAXCount;
+            if (world != null)
+                world.MaximumGroupedEAXCount = _maximumGroupedEAXCount;
         }
     }
 
@@ -77,8 +77,8 @@ public partial class VercidiumAudio : Node
         {
             _renderingEnabled = value;
 
-            if (context != null)
-                context.RenderingEnabled = value;
+            if (world != null)
+                world.RenderingEnabled = value;
         }
     }
 }

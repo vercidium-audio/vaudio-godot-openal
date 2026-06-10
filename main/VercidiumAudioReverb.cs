@@ -53,18 +53,18 @@ public partial class VercidiumAudio : Node
         if (listener.EAX != null)
             CopyReverb(listener.EAX, listenerReverbEffect, false);
 
-        for (int i = 0; i < context.GroupedEAX.Count; i++)
+        for (int i = 0; i < world.GroupedEAX.Count; i++)
         {
             if (groupedReverbEffects.Count <= i)
                 groupedReverbEffects.Add(new());
 
-            CopyReverb(context.GroupedEAX[i], groupedReverbEffects[i], true);
+            CopyReverb(world.GroupedEAX[i], groupedReverbEffects[i], true);
 
             groupedReverbEffects[i].Update();
         }
     }
 
-    void CopyReverb(vaudio.EAXReverbResults eax, ALReverbEffect effect, bool isGroupedEAX)
+    void CopyReverb(vaudio.EAXReverb eax, ALReverbEffect effect, bool isGroupedEAX)
     {
         effect.gain = 1f;
 
@@ -92,12 +92,12 @@ public partial class VercidiumAudio : Node
         effect.roomRolloffFactor = eax.RoomRolloffFactor;
         effect.decayHFLimit = eax.DecayHFLimit;
 
-        if (isGroupedEAX && eax.Pan.TryGetValue(listener.emitter, out var pan))
+        if (isGroupedEAX && eax.RelativeDirections != null && eax.RelativeDirections.TryGetValue(listener.emitter, out var pan))
         {
             // Convert to openal
-            pan = vaudio.RaytracingContext.CalculateListenerRelativePan(pan, listener.Pitch, listener.Yaw);
+            pan = vaudio.World.CalculateListenerRelativePan(pan, listener.Pitch, listener.Yaw);
 
-            effect.effectSlotGain = eax.EffectSlotGain[listener.emitter];
+            effect.effectSlotGain = eax.RelativeGains[listener.emitter];
             effect.effectSlotGain = Math.Max(0, effect.effectSlotGain);
             effect.effectSlotGain = Math.Min(1, effect.effectSlotGain);
 

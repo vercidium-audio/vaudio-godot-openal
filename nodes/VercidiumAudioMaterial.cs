@@ -41,7 +41,7 @@ public partial class VercidiumAudioMaterial : Node
             PlaneTransmissionHF
         );
 
-        vercidiumAudio.context.AddMaterial((vaudio.MaterialType)MaterialType, vaudioMaterial, GetDebugColor());
+        vercidiumAudio.world.AddMaterial((vaudio.MaterialType)MaterialType, vaudioMaterial, GetDebugColor());
         vercidiumAudio.customMaterials[MaterialType] = this;
     }
 
@@ -108,10 +108,7 @@ public partial class VercidiumAudioMaterial : Node
             _AbsorptionLF = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.AbsorptionLF = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -131,10 +128,7 @@ public partial class VercidiumAudioMaterial : Node
             _AbsorptionHF = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.AbsorptionHF = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -154,10 +148,7 @@ public partial class VercidiumAudioMaterial : Node
             _Scattering = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.Scattering = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -177,10 +168,7 @@ public partial class VercidiumAudioMaterial : Node
             _TransmissionLF = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.TransmissionLF = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -200,10 +188,7 @@ public partial class VercidiumAudioMaterial : Node
             _TransmissionHF = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.TransmissionHF = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -223,10 +208,7 @@ public partial class VercidiumAudioMaterial : Node
             _PlaneTransmissionLF = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.PlaneTransmissionLF = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -246,10 +228,7 @@ public partial class VercidiumAudioMaterial : Node
             _PlaneTransmissionHF = value;
 
             if (vercidiumAudio != null)
-            {
                 vaudioMaterial.PlaneTransmissionHF = value;
-                vercidiumAudio.context.MaterialsDirty = true;
-            }
         }
     }
 
@@ -264,7 +243,7 @@ public partial class VercidiumAudioMaterial : Node
         {
             _DebugColor = value;
 
-            vercidiumAudio?.context.SetMaterialColor((vaudio.MaterialType)MaterialType, GetDebugColor());
+            vercidiumAudio?.world.SetMaterialColor((vaudio.MaterialType)MaterialType, GetDebugColor());
         }
     }
 

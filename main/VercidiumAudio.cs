@@ -30,10 +30,10 @@ public partial class VercidiumAudio : Node
             VisualisationRayCount = node.VisualisationRayCount,
             VisualisationBounceCount = node.VisualisationBounceCount,
             AffectsGroupedEAX = node.AffectsGroupedEAX,
-            HasReverbPan = node.HasReverbPan,
+            HasRelativeReverb = node.HasRelativeReverb,
         };
 
-        context.AddEmitter(emitter);
+        world.AddEmitter(emitter);
 
         if (node.IsMainListener)
         {
@@ -68,7 +68,7 @@ public partial class VercidiumAudio : Node
 
         emitters.Add(emitter);
         listener.RemoveTarget(emitter);
-        context.RemoveEmitter(emitter);
+        world.RemoveEmitter(emitter);
     }
 
     // Log to both - in case we're launched from vs2026 or from the Godot Editor

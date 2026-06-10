@@ -149,9 +149,9 @@ public partial class VercidiumAudioEmitter : Node3D
     }
 
     // Shortcuts
-    public vaudio.RawReverbResults RawReverb => emitter.RawReverb;
-    public vaudio.ProcessedReverbResults ProcessedReverb => emitter.ProcessedReverb;
-    public vaudio.EAXReverbResults EAX => emitter.EAX;
+    public vaudio.RawReverb RawReverb => emitter.RawReverb;
+    public vaudio.ProcessedReverb ProcessedReverb => emitter.ProcessedReverb;
+    public vaudio.EAXReverb EAX => emitter.EAX;
     public vaudio.LowPassFilter AmbientFilter => emitter.AmbientFilter;
     public int GroupedEAXIndex => emitter.GroupedEAXIndex;
 
@@ -194,17 +194,17 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    bool _HasReverbPan = false;
+    bool _HasRelativeReverb = false;
     [Export]
-    public bool HasReverbPan
+    public bool HasRelativeReverb
     {
-        get => _HasReverbPan;
+        get => _HasRelativeReverb;
         set
         {
-            _HasReverbPan = value;
+            _HasRelativeReverb = value;
 
             if (emitter != null)
-                emitter.HasReverbPan = value;
+                emitter.HasRelativeReverb = value;
         }
     }
 
@@ -270,7 +270,7 @@ public partial class VercidiumAudioEmitter : Node3D
     }
 
 
-    int _MaxEchogramTime = 1000;
+    int _MaxEchogramTime = 5000;
     [Export]
     public int MaxEchogramTime
     {
@@ -286,7 +286,7 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    int _EchogramGranularity = 10;
+    int _EchogramGranularity = 50;
     [Export]
     public int EchogramGranularity
     {
@@ -302,7 +302,7 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    float _ReverbEnergyCap = 0.05f;
+    float _ReverbEnergyCap = 0.2f;
     [Export(PropertyHint.Range, "0.0,1.0")]
     public float ReverbEnergyCap
     { 

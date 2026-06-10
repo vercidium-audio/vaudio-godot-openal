@@ -4,7 +4,7 @@ namespace vaudio_godot_openal;
 
 public partial class VercidiumAudio : Node
 {
-    public bool Initialised => context != null;
+    public bool Initialised => world != null;
 
     public override void _EnterTree()
     {
@@ -14,11 +14,11 @@ public partial class VercidiumAudio : Node
         // Cache the scene root since we access it often
         SceneRoot = GetTree().CurrentScene as Node3D;
 
-        context = new()
+        world = new()
         {
             LogCallback = Log,
-            WorldPosition = new(WorldPosition.X, WorldPosition.Y, WorldPosition.Z),
-            WorldSize = new(WorldSize.X, WorldSize.Y, WorldSize.Z),
+            Position = new(Position.X, Position.Y, Position.Z),
+            Size = new(Size.X, Size.Y, Size.Z),
             RenderingEnabled = RenderingEnabled,
             MaximumGroupedEAXCount = MaximumGroupedEAXCount,
             OnReverbUpdated = OnReverbUpdated
@@ -85,7 +85,7 @@ public partial class VercidiumAudio : Node
         // Remove vercidium_audio_* metadata fields from all nodes in the scene
         RemovePrimitive(SceneRoot, true);
 
-        context?.Dispose();
+        world?.Dispose();
     }
 
     // This fires for the new parent node AND each of its child nodes separately
@@ -128,9 +128,9 @@ public partial class VercidiumAudio : Node
        // context.CameraPosition = ToVAudio(listener.GlobalPosition);
         //context.CameraPitch = listener.Pitch;
         //context.CameraYaw = listener.Yaw;
-        context.FieldOfView = float.DegreesToRadians(90);
+        world.FieldOfView = float.DegreesToRadians(90);
 
-        context.Update();
+        world.Update();
     }
 
 }

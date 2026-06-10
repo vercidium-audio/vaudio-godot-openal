@@ -45,7 +45,7 @@ public partial class VercidiumAudio : Node
                 if (cs.Shape.IsConnected(Resource.SignalName.Changed, shapeCallable))
                     cs.Shape.Disconnect(Resource.SignalName.Changed, shapeCallable);
 
-            context.RemovePrimitive(wrapper.Primitive);
+            world.RemovePrimitive(wrapper.Primitive);
             node.RemoveMeta(PRIMITIVE_META_KEY);
         }
 
@@ -79,7 +79,7 @@ public partial class VercidiumAudio : Node
             material = material
         };
 
-        context.AddPrimitive(prim);
+        world.AddPrimitive(prim);
 
         csgBox.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(csgBox, prim, () =>
         {
@@ -129,7 +129,7 @@ public partial class VercidiumAudio : Node
             };
         }
 
-        context.AddPrimitive(prim);
+        world.AddPrimitive(prim);
 
         csgCylinder.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(csgCylinder, prim, () =>
         {
@@ -170,7 +170,7 @@ public partial class VercidiumAudio : Node
             material = material
         };
 
-        context.AddPrimitive(prim);
+        world.AddPrimitive(prim);
 
         csgSphere.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(csgSphere, prim, () =>
         {
@@ -216,7 +216,7 @@ public partial class VercidiumAudio : Node
 
         vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform);
 
-        context.AddPrimitive(prim);
+        world.AddPrimitive(prim);
 
         csgPolygon.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(csgPolygon, prim, () =>
         {
@@ -252,7 +252,7 @@ public partial class VercidiumAudio : Node
 
         vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform);
 
-        context.AddPrimitive(prim);
+        world.AddPrimitive(prim);
 
         csgMesh.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(csgMesh, prim, () =>
         {
@@ -281,7 +281,7 @@ public partial class VercidiumAudio : Node
 
         if (shape is BoxShape3D box)
         {
-            context.AddPrimitive(prim = new vaudio.PrismPrimitive()
+            world.AddPrimitive(prim = new vaudio.PrismPrimitive()
             {
                 size = ToVAudio(box.Size),
                 transform = ToVAudio(globalTransform),
@@ -290,9 +290,9 @@ public partial class VercidiumAudio : Node
         }
         else if (shape is SphereShape3D sphere)
         {
-            context.AddPrimitive(prim = new vaudio.SpherePrimitive()
+            world.AddPrimitive(prim = new vaudio.SpherePrimitive()
             {
-                center = new vaudio.Vector3F(position.X, position.Y, position.Z),
+                center = new vaudio.Vector(position.X, position.Y, position.Z),
                 radius = sphere.Radius * scale.X,
                 material = material
             });
@@ -305,7 +305,7 @@ public partial class VercidiumAudio : Node
             float cylinderLength = capsule.Height - 2 * capsule.Radius;
             if (cylinderLength < 0) cylinderLength = 0;
 
-            context.AddPrimitive(prim = new vaudio.CapsulePrimitive()
+            world.AddPrimitive(prim = new vaudio.CapsulePrimitive()
             {
                 radius = capsule.Radius * scale.X,
                 length = cylinderLength * scale.Y,
@@ -315,7 +315,7 @@ public partial class VercidiumAudio : Node
         }
         else if (shape is CylinderShape3D cylinder)
         {
-            context.AddPrimitive(prim = new vaudio.CylinderPrimitive()
+            world.AddPrimitive(prim = new vaudio.CylinderPrimitive()
             {
                 radius = cylinder.Radius * scale.X,
                 length = cylinder.Height * scale.Y,
@@ -347,9 +347,9 @@ public partial class VercidiumAudio : Node
                 planePosition
             );
 
-            var worldMagnitude = context.WorldSize.Magnitude;
+            var worldMagnitude = world.Size.Magnitude;
 
-            context.AddPrimitive(prim = new vaudio.PlanePrimitive()
+            world.AddPrimitive(prim = new vaudio.PlanePrimitive()
             {
                 // Use the max world size to ensure the plane covers the raytracing scene
                 //  * 2 in case the plane is positioned in the corner of the world
@@ -367,7 +367,7 @@ public partial class VercidiumAudio : Node
             if (triangles.Count > 0)
             {
                 prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform);
-                context.AddPrimitive(prim);
+                world.AddPrimitive(prim);
             }
         }
         else if (shape is HeightMapShape3D heightMap)
@@ -378,7 +378,7 @@ public partial class VercidiumAudio : Node
             if (triangles.Count > 0)
             {
                 prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform);
-                context.AddPrimitive(prim);
+                world.AddPrimitive(prim);
             }
         }
         else if (shape is ConcavePolygonShape3D polygon)
@@ -389,7 +389,7 @@ public partial class VercidiumAudio : Node
             if (triangles.Count > 0)
             {
                 prim = new vaudio.MeshPrimitive(material, triangles, min, max, transform);
-                context.AddPrimitive(prim);
+                world.AddPrimitive(prim);
             }
         }
 
@@ -509,7 +509,7 @@ public partial class VercidiumAudio : Node
             supportsPermeation = true
         };
 
-        context.AddPrimitive(prim);
+        world.AddPrimitive(prim);
 
         meshInstance.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(meshInstance, prim, () =>
         {

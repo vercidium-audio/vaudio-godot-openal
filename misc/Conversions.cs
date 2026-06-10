@@ -2,12 +2,12 @@ namespace vaudio_godot_openal;
 
 public static class Conversions
 {
-    public static List<vaudio.Vector3F> ConvertMeshToVector3FList(string name, Mesh mesh, out vaudio.Vector3F minOut, out vaudio.Vector3F maxOut)
+    public static List<vaudio.Vector> ConvertMeshToVector3FList(string name, Mesh mesh, out vaudio.Vector minOut, out vaudio.Vector maxOut)
     {
-        List<vaudio.Vector3F> vertices = [];
+        List<vaudio.Vector> vertices = [];
 
-        var min = vaudio.Vector3F.MAX;
-        var max = vaudio.Vector3F.MIN;
+        var min = vaudio.Vector.MAX;
+        var max = vaudio.Vector.MIN;
 
         var surfaceCount = mesh.GetSurfaceCount();
 
@@ -108,8 +108,8 @@ public static class Conversions
         // If no vertices were found, reset to default bounds
         if (vertices.Count == 0)
         {
-            min = vaudio.Vector3F.Zero;
-            max = vaudio.Vector3F.Zero;
+            min = vaudio.Vector.Zero;
+            max = vaudio.Vector.Zero;
 
             VercidiumAudio.LogWarning($"Mesh {name} will not affect raytracing as it has no vertices");
         }
@@ -120,27 +120,27 @@ public static class Conversions
         return vertices;
     }
 
-    public static List<vaudio.Vector3F> ConvertConcavePolygonToVector3FList(string name, ConcavePolygonShape3D shape, out vaudio.Vector3F min, out vaudio.Vector3F max)
+    public static List<vaudio.Vector> ConvertConcavePolygonToVector3FList(string name, ConcavePolygonShape3D shape, out vaudio.Vector min, out vaudio.Vector max)
     {
         Vector3[] faces = shape.GetFaces();
 
         if (faces.Length == 0)
         {
-            min = new vaudio.Vector3F(0, 0, 0);
-            max = new vaudio.Vector3F(0, 0, 0);
+            min = new vaudio.Vector(0, 0, 0);
+            max = new vaudio.Vector(0, 0, 0);
 
             VercidiumAudio.LogWarning($"ConcavePolygonShape3D {name} will not affect raytracing as it has no faces");
             return [];
         }
 
-        List<vaudio.Vector3F> vertices = [];
+        List<vaudio.Vector> vertices = [];
 
-        min = vaudio.Vector3F.MAX;
-        max = vaudio.Vector3F.MIN;
+        min = vaudio.Vector.MAX;
+        max = vaudio.Vector.MIN;
 
         for (int i = 0; i < faces.Length; i++)
         {
-            vaudio.Vector3F vertex = ToVAudio(faces[i]);
+            vaudio.Vector vertex = ToVAudio(faces[i]);
 
             vertices.Add(vertex);
 
@@ -157,15 +157,15 @@ public static class Conversions
         return vertices;
     }
 
-    public static List<vaudio.Vector3F> ConvertConvexPolygonToVector3FList(string name, ConvexPolygonShape3D shape, out vaudio.Vector3F min, out vaudio.Vector3F max)
+    public static List<vaudio.Vector> ConvertConvexPolygonToVector3FList(string name, ConvexPolygonShape3D shape, out vaudio.Vector min, out vaudio.Vector max)
     {
         // Use the debug mesh to triangulate the polygon
         var debugMesh = shape.GetDebugMesh();
 
         if (debugMesh == null)
         {
-            min = new vaudio.Vector3F(0, 0, 0);
-            max = new vaudio.Vector3F(0, 0, 0);
+            min = new vaudio.Vector(0, 0, 0);
+            max = new vaudio.Vector(0, 0, 0);
 
             VercidiumAudio.LogWarning($"ConvexPolygonShape3D {name} will not affect raytracing as it cannot be triangulated");
             return [];
@@ -174,7 +174,7 @@ public static class Conversions
         return ConvertMeshToVector3FList(name, debugMesh, out min, out max);
     }
 
-    public static List<vaudio.Vector3F> ConvertHeightMapToVector3FList(string name, HeightMapShape3D shape, out vaudio.Vector3F min, out vaudio.Vector3F max)
+    public static List<vaudio.Vector> ConvertHeightMapToVector3FList(string name, HeightMapShape3D shape, out vaudio.Vector min, out vaudio.Vector max)
     {
         int mapWidth = shape.MapWidth;
         int mapDepth = shape.MapDepth;
@@ -183,17 +183,17 @@ public static class Conversions
         // Skip invalid heightmaps
         if (mapWidth < 2 || mapDepth < 2 || mapData.Length < mapWidth * mapDepth)
         {
-            min = new vaudio.Vector3F(0, 0, 0);
-            max = new vaudio.Vector3F(0, 0, 0);
+            min = new vaudio.Vector(0, 0, 0);
+            max = new vaudio.Vector(0, 0, 0);
 
             VercidiumAudio.LogWarning($"HeightMapShape3D {name} will not affect raytracing as its dimensions are less than 2x2");
             return [];
         }
 
-        List<vaudio.Vector3F> triangles = [];
+        List<vaudio.Vector> triangles = [];
 
-        min = vaudio.Vector3F.MAX;
-        max = vaudio.Vector3F.MIN;
+        min = vaudio.Vector.MAX;
+        max = vaudio.Vector.MIN;
 
         // HeightMapShape3D nodes are centered at the origin,
         //  spanning from -width / 2 to + width / 2 and -depth / 2 to +depth / 2
@@ -215,10 +215,10 @@ public static class Conversions
                     continue;
 
                 // Calculate world positions (centered at origin)
-                vaudio.Vector3F v00 = new(x - halfWidth, h00, z - halfDepth);
-                vaudio.Vector3F v10 = new(x + 1 - halfWidth, h10, z - halfDepth);
-                vaudio.Vector3F v01 = new(x - halfWidth, h01, z + 1 - halfDepth);
-                vaudio.Vector3F v11 = new(x + 1 - halfWidth, h11, z + 1 - halfDepth);
+                vaudio.Vector v00 = new(x - halfWidth, h00, z - halfDepth);
+                vaudio.Vector v10 = new(x + 1 - halfWidth, h10, z - halfDepth);
+                vaudio.Vector v01 = new(x - halfWidth, h01, z + 1 - halfDepth);
+                vaudio.Vector v11 = new(x + 1 - halfWidth, h11, z + 1 - halfDepth);
 
                 // Create two triangles for each quad, with clockwise winding for upward-facing normals
                 triangles.Add(v00);
@@ -240,8 +240,8 @@ public static class Conversions
 
         if (triangles.Count == 0)
         {
-            min = new vaudio.Vector3F(0, 0, 0);
-            max = new vaudio.Vector3F(0, 0, 0);
+            min = new vaudio.Vector(0, 0, 0);
+            max = new vaudio.Vector(0, 0, 0);
         }
 
         return triangles;

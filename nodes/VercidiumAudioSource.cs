@@ -128,7 +128,7 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    int _MaxEchogramTime = 1000;
+    int _MaxEchogramTime = 5000;
     [Export]
     public int MaxEchogramTime
     {
@@ -144,7 +144,7 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    int _EchogramGranularity = 10;
+    int _EchogramGranularity = 50;
     [Export]
     public int EchogramGranularity
     {
@@ -160,7 +160,7 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    float _ReverbEnergyCap = 0.05f;
+    float _ReverbEnergyCap = 0.2f;
     [Export(PropertyHint.Range, "0.0,1.0")]
     public float ReverbEnergyCap
     {

@@ -6,16 +6,16 @@ namespace vaudio_godot_openal;
 
 internal static class Extensions
 {
-    public static vaudio.Vector3F ToVAudio(Vector3 v) => new(v.X, v.Y, v.Z);
-    public static Vector3 FromVAudio(vaudio.Vector3F v) => new(v.X, v.Y, v.Z);
+    public static vaudio.Vector ToVAudio(Vector3 v) => new(v.X, v.Y, v.Z);
+    public static Vector3 FromVAudio(vaudio.Vector v) => new(v.X, v.Y, v.Z);
 
-    public static vaudio.Matrix4F ToVAudio(Transform3D globalTransform)
+    public static vaudio.Matrix ToVAudio(Transform3D globalTransform)
     {
         var basis = globalTransform.Basis;
         var origin = globalTransform.Origin;
 
         // Both Godot's Basis and vaudio.Matrix4F are column-major
-        return new vaudio.Matrix4F(
+        return new vaudio.Matrix(
             basis.X.X, basis.X.Y, basis.X.Z, 0f,
             basis.Y.X, basis.Y.Y, basis.Y.Z, 0f,
             basis.Z.X, basis.Z.Y, basis.Z.Z, 0f,
