@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 const VercidiumAudio = preload("res://addons/vaudio-godot-openal/main/VercidiumAudio.cs")
-const VercidiumAudioEmitter = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioEmitter.cs")
+const VercidiumAudioEmitter = preload("res://addons/vaudio-godot-openal/emitter/VercidiumAudioEmitter.cs")
 const VercidiumAudioMaterial = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioMaterial.cs")
 
 const VercidiumAudioSource = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSource.cs")

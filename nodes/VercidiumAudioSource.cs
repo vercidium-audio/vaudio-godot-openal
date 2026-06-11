@@ -74,9 +74,7 @@ public partial class VercidiumAudioSource : ALSource3D
             _ReverbEnergyCap = value;
 
             if (emitter != null)
-            {
-                emitter.ReverbEnergyCap = value;
-            }
+                emitter.ReverbEnergyCap = _ReverbEnergyCap;
         }
     }
 
@@ -496,7 +494,7 @@ public partial class VercidiumAudioSource : ALSource3D
             // Reverb
             ReverbRayCount = ReverbRayCount,
             ReverbBounceCount = ReverbBounceCount,
-            ReverbEnergyCap = ReverbRayCount * ReverbBounceCount * ReverbEnergyCap,
+            ReverbEnergyCap = _ReverbEnergyCap,
             MaxEchogramTime = MaxEchogramTime,
             EchogramGranularity = EchogramGranularity,
             AffectsGroupedEAX = AffectsGroupedEAX,

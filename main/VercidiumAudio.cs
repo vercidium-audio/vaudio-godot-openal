@@ -18,7 +18,7 @@ public partial class VercidiumAudio : Node
             // Reverb
             ReverbRayCount = node.ReverbRayCount,
             ReverbBounceCount = node.ReverbBounceCount,
-            ReverbEnergyCap = node.ReverbRayCount * node.ReverbBounceCount * node.ReverbEnergyCap,
+            ReverbEnergyCap = node.ReverbEnergyCap,
             MaxEchogramTime = node.MaxEchogramTime,
             EchogramGranularity = node.EchogramGranularity,
             AffectsGroupedEAX = node.AffectsGroupedEAX,
