@@ -13,7 +13,7 @@ You should now see a `your_game.csproj` file in your project folder. This is req
 Clone the `vaudio-godot-openal` and `godot-openal` repositories to the addons folder:
 
 ```bash
-cd your_game
+cd your_godot_game
 mkdir addons
 cd addons
 git clone git@github.com:vercidium-audio/vaudio-godot-openal.git
@@ -38,7 +38,7 @@ This is good. Close your Godot project and continue on.
 
 ### Step 3 - Configure .csproj
 
-Open your `.csproj` file in a text editor and replace this with the path to your vaudio folder, e.g. `C:/Users/You/Downloads/vaudio_v1.2.2`
+Open your `.csproj` file in a text editor and replace this with the path to your vaudio folder, e.g. `C:/Users/You/Downloads/vaudio_v1_2_0`
 
 ```xml
 <PropertyGroup>

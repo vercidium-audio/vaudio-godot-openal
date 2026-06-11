@@ -9,10 +9,10 @@ const VercidiumAudioSource = preload("res://addons/vaudio-godot-openal/nodes/Ver
 const VercidiumAudioSourceRelative = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceRelative.cs")
 const VercidiumAudioSourceAmbient = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceAmbient.cs")
 
-const CSPROJ_INSERT = """    <!-- Add vaudio.dll to your project -->
-    <ItemGroup>
+const CSPROJ_INSERT = """    <ItemGroup>
         <Reference Include="vaudio">
-            <HintPath>path\\to\\your\\vaudio.dll</HintPath>
+            <!-- Replace this with the path to your vaudio SDK -->
+            <HintPath>path\\to\\vaudio.dll</HintPath>
         </Reference>
     </ItemGroup>"""
 
@@ -73,8 +73,8 @@ func _setup_project():
 	_setup_done = true
 
 	if "vaudio.dll" in content:
-		if "path\\to\\your\\vaudio.dll" in content:
-			push_error("[vaudio-godot-openal] csproj is invalid (%s) - please replace 'path\\to\\your\\vaudio.dll' with your actual vaudio.dll path, then disable and enable the VercidiumAudio plugin" % ProjectSettings.globalize_path(csproj_path))
+		if "path\\to\\vaudio.dll" in content:
+			push_error("[vaudio-godot-openal] csproj is invalid (%s) - please replace 'path\\to\\vaudio.dll' with your actual vaudio.dll path, then disable and enable the Vercidium Audio plugin" % ProjectSettings.globalize_path(csproj_path))
 		else:
 			print("[vaudio-godot-openal] csproj configured correctly")
 		return
@@ -90,7 +90,7 @@ func _setup_project():
 	if file:
 		file.store_string(new_content)
 		file.close()
-		push_warning("[vaudio-godot-openal] Added vaudio references to ", ProjectSettings.globalize_path(csproj_path), " - please replace 'path\\to\\your\\vaudio.dll' with your actual vaudio.dll path, then disable and enable the VercidiumAudio plugin")
+		push_warning("[vaudio-godot-openal] Added vaudio references to ", ProjectSettings.globalize_path(csproj_path), " - please replace 'path\\to\\vaudio.dll' with your actual vaudio.dll path, then disable and enable the Vercidium Audio plugin")
 
 func _enable_plugin():
 	if not DirAccess.dir_exists_absolute("res://addons/godot-openal"):
