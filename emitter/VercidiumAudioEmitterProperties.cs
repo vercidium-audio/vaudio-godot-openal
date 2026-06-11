@@ -2,38 +2,11 @@ namespace vaudio_godot_openal;
 
 public partial class VercidiumAudioEmitter : Node3D
 {
-    public Action OnRaytracingCompleteCallback;
-    public Action<vaudio.Emitter> OnRaytracedByAnotherEmitterCallback;
-
-    [ExportGroup("Orientation")]
-
-    float _Pitch;
-    [Export]
-    public float Pitch
-    {
-        get => _Pitch;
-        set
-        {
-            _Pitch = value;
-        }
-    }
-
-    float _Yaw;
-    [Export]
-    public float Yaw
-    {
-        get => _Yaw;
-        set
-        {
-            _Yaw = value;
-        }
-    }
-
-
     [ExportGroup("Reverb")]
 
-    int _ReverbRayCount = 128;
+    int _ReverbRayCount = 0;
     [Export]
+    /// <summary>Number of reverb rays cast</summary>
     public int ReverbRayCount
     {
         get => _ReverbRayCount;
@@ -46,8 +19,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    int _ReverbBounceCount = 64;
+    int _ReverbBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per reverb ray</summary>
     public int ReverbBounceCount
     {
         get => _ReverbBounceCount;
@@ -63,6 +37,10 @@ public partial class VercidiumAudioEmitter : Node3D
     float _ReverbEnergyCap = 0.2f;
 
     [Export(PropertyHint.Range, "0.0,1.0")]
+    /// <summary>
+    /// The percentage of returning energy required for reverb to be at maximum volume. Defaults to 20% of the other emitter's <see cref="ReverbRayCount"/> * <see cref="ReverbBounceCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, less than 0 or greater than 1</exception>
     public float ReverbEnergyCap
     {
         get => _ReverbEnergyCap;
@@ -77,6 +55,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _MaxEchogramTime = 5000;
     [Export]
+    /// <summary>How long (in milliseconds) the echogram records data for. Returning reverb rays after this period will be ignored. Defaults to 5000ms</summary>
     public int MaxEchogramTime
     {
         get => _MaxEchogramTime;
@@ -93,6 +72,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _EchogramGranularity = 50;
     [Export]
+    /// <summary>The length (in milliseconds) of each entry in the echogram. Defaults to 50ms</summary>
     public int EchogramGranularity
     {
         get => _EchogramGranularity;
@@ -107,8 +87,11 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    bool _AffectsGroupedEAX = false;
+    bool _AffectsGroupedEAX = true;
     [Export]
+    /// <summary>
+    /// Controls whether this Emitter's EAX is blended to produced grouped EAX. Set this to false for listener emitters
+    /// </summary>
     public bool AffectsGroupedEAX
     {
         get => _AffectsGroupedEAX;
@@ -123,6 +106,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     bool _HasRelativeReverb = true;
     [Export]
+    /// <summary>Whether this emitter is used as a reference point for calculating relative reverb gain and direction</summary>
     public bool HasRelativeReverb
     {
         get => _HasRelativeReverb;
@@ -137,6 +121,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     float _RelativeReverbInnerThreshold = 0.6f;
     [Export]
+    /// <summary>The lower bound of the relative reverb blend range</summary>
     public float RelativeReverbInnerThreshold
     {
         get => _RelativeReverbInnerThreshold;
@@ -149,8 +134,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    float _RelativeReverbOuterThreshold = 0.6f;
+    float _RelativeReverbOuterThreshold = 0.8f;
     [Export]
+    /// <summary>The upper bound of the relative reverb blend range</summary>
     public float RelativeReverbOuterThreshold
     {
         get => _RelativeReverbOuterThreshold;
@@ -166,8 +152,9 @@ public partial class VercidiumAudioEmitter : Node3D
 
     [ExportGroup("Muffling")]
 
-    int _OcclusionRayCount = 256;
+    int _OcclusionRayCount = 0;
     [Export]
+    /// <summary>Number of occlusion rays cast</summary>
     public int OcclusionRayCount
     { 
         get => _OcclusionRayCount;
@@ -180,8 +167,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
     
-    int _OcclusionBounceCount = 8;
+    int _OcclusionBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per occlusion ray</summary>
     public int OcclusionBounceCount
     { 
         get => _OcclusionBounceCount;
@@ -196,6 +184,10 @@ public partial class VercidiumAudioEmitter : Node3D
     
     float _OcclusionEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of occlusion energy required for this emitter to be at full volume. Defaults to 15% of the other emitter's <see cref="OcclusionRayCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float OcclusionEnergyCap
     { 
         get => _OcclusionEnergyCap;
@@ -208,8 +200,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    int _PermeationRayCount = 128;
+    int _PermeationRayCount = 0;
     [Export]
+    /// <summary>Number of permeation rays cast</summary>
     public int PermeationRayCount
     { 
         get => _PermeationRayCount;
@@ -222,8 +215,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
     
-    int _PermeationBounceCount = 2;
+    int _PermeationBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per permeation ray</summary>
     public int PermeationBounceCount
     { 
         get => _PermeationBounceCount;
@@ -238,6 +232,10 @@ public partial class VercidiumAudioEmitter : Node3D
 
     float _PermeationEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of permeation energy required for this emitter to be at full volume. Defaults to 15% of the other emitter's <see cref="PermeationRayCount"/> * <see cref="PermeationBounceCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float PermeationEnergyCap
     {
         get => _PermeationEnergyCap;
@@ -253,8 +251,9 @@ public partial class VercidiumAudioEmitter : Node3D
 
     [ExportGroup("Ambience")]
 
-    int _AmbientOcclusionRayCount = 128;
+    int _AmbientOcclusionRayCount = 0;
     [Export]
+    /// <summary>Number of ambient occlusion rays cast</summary>
     public int AmbientOcclusionRayCount
     { 
         get => _AmbientOcclusionRayCount;
@@ -267,8 +266,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
     
-    int _AmbientOcclusionBounceCount = 4;
+    int _AmbientOcclusionBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per ambient occlusion ray</summary>
     public int AmbientOcclusionBounceCount
     { 
         get => _AmbientOcclusionBounceCount;
@@ -283,6 +283,10 @@ public partial class VercidiumAudioEmitter : Node3D
 
     float _AmbientOcclusionEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of occlusion energy required for the emitter to be at full volume. Defaults to 15% of this emitter's <see cref="AmbientOcclusionRayCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float AmbientOcclusionEnergyCap
     {
         get => _AmbientOcclusionEnergyCap;
@@ -295,8 +299,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    int _AmbientPermeationRayCount = 128;
+    int _AmbientPermeationRayCount = 0;
     [Export]
+    /// <summary>Number of ambient permeation rays cast</summary>
     public int AmbientPermeationRayCount
     { 
         get => _AmbientPermeationRayCount;
@@ -309,8 +314,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
     
-    int _AmbientPermeationBounceCount = 2;
+    int _AmbientPermeationBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per ambient permeation ray</summary>
     public int AmbientPermeationBounceCount
     { 
         get => _AmbientPermeationBounceCount;
@@ -325,6 +331,10 @@ public partial class VercidiumAudioEmitter : Node3D
 
     float _AmbientPermeationEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of permeation energy required for the emitter to be at full volume. Defaults to 15% of this emitter's <see cref="AmbientPermeationRayCount"/> * <see cref="AmbientPermeationBounceCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float AmbientPermeationEnergyCap
     {
         get => _AmbientPermeationEnergyCap;
@@ -341,6 +351,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _VisualisationRayCount = 0;
     [Export]
+    /// <summary>Number of visualisation rays cast</summary>
     public int VisualisationRayCount
     { 
         get => _VisualisationRayCount;
@@ -355,6 +366,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _VisualisationBounceCount = 0;
     [Export]
+    /// <summary>Number of times each visualisation ray bounces</summary>
     public int VisualisationBounceCount
     {
         get => _VisualisationBounceCount;
@@ -369,6 +381,7 @@ public partial class VercidiumAudioEmitter : Node3D
     
     int _VisualisationUpdateFrequency = 500;
     [Export]
+    /// <summary>How often - in milliseconds - to cast visualisation rays. Defaults to 500</summary>
     public int VisualisationUpdateFrequency
     { 
         get => _VisualisationUpdateFrequency;
@@ -384,8 +397,11 @@ public partial class VercidiumAudioEmitter : Node3D
 
     [ExportGroup("Debug Rendering")]
 
-    Godot.Color _TrailColor = new(1, 1, 1, 0.1f);
+    Godot.Color _TrailColor = new(1.0f, 1.0f, 1.0f, 0.1f);
     [Export]
+    /// <summary>
+    /// The color of ray trails in the debug window (dev build only)
+    /// </summary>
     public Godot.Color TrailColor
     {
         get => _TrailColor;
@@ -398,8 +414,11 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    Godot.Color _ReverbColor = new(27.0f / 255.0f, 247.0f / 255.0f, 255.0f / 255.0f, 0.2f);
+    Godot.Color _ReverbColor = new(0.11f, 0.97f, 1.0f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of reverb rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color ReverbColor
     {
         get => _ReverbColor;
@@ -412,8 +431,11 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    Godot.Color _OcclusionColor = new(27.0f / 255.0f, 247.0f / 255.0f, 255.0f / 255.0f, 0.2f);
+    Godot.Color _OcclusionColor = new(0.44f, 1.0f, 0.64f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of occlusion rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color OcclusionColor
     {
         get => _OcclusionColor;
@@ -426,8 +448,11 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    Godot.Color _PermeationColor = new(255.0f / 255.0f, 127.0f / 255.0f, 42.0f / 255.0f, 0.2f);
+    Godot.Color _PermeationColor = new(1.0f, 0.5f, 0.17f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of permeation rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color PermeationColor
     {
         get => _PermeationColor;
@@ -440,8 +465,11 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    Godot.Color _AmbientPermeationColor = new(255.0f / 255.0f, 204.0f / 255.0f, 0.0f, 0.2f);
+    Godot.Color _AmbientPermeationColor = new(1.0f, 0.8f, 0.0f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of ambientPermeation rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color AmbientPermeationColor
     {
         get => _AmbientPermeationColor;
@@ -458,6 +486,7 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _Type;
     [Export]
+    /// <summary>User-defined type for this emitter</summary>
     public int Type
     {
         get => _Type;
@@ -472,6 +501,9 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _ReservedEmitterTargets;
     [Export]
+    /// <summary>
+    /// The number of emitters that are allocated ahead of time, to prevent runtime allocations. Clamped to minimum of 0
+    /// </summary>
     public int ReservedEmitterTargets
     {
         get => _ReservedEmitterTargets;
@@ -486,6 +518,9 @@ public partial class VercidiumAudioEmitter : Node3D
 
     int _RefreshRayCount = 16;
     [Export]
+    /// <summary>
+    /// The number of trails that are rebuilt from scratch each frame to prevent staleness when the listener moves. Clamped to minimum of 0.
+    /// </summary>
     public int RefreshRayCount
     {
         get => _RefreshRayCount;
@@ -500,6 +535,9 @@ public partial class VercidiumAudioEmitter : Node3D
 
     float _RefreshDistanceThreshold = 1.0f;
     [Export]
+    /// <summary>
+    /// A ray trail will be re-created if an old ray bounce position is too far away from the new ray bounce position. This setting controls the allowed distance between old and new ray bounce positions. Defaults to 1.0f. Clamped to minimum of 0.
+    /// </summary>
     public float RefreshDistanceThreshold
     {
         get => _RefreshDistanceThreshold;
@@ -512,8 +550,9 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    int _ScatteringSeed = Random.Shared.Next();
+    int _ScatteringSeed = Random.Shared.Next(int.MaxValue);
     [Export]
+    /// <summary>A seed used to randomise scattering vectors</summary>
     public int ScatteringSeed
     {
         get => _ScatteringSeed;
@@ -522,12 +561,13 @@ public partial class VercidiumAudioEmitter : Node3D
             _ScatteringSeed = value;
 
             if (emitter != null)
-                emitter.RefreshRayCount = value;
+                emitter.ScatteringSeed = value;
         }
     }
 
     bool _ClampPosition = true;
     [Export]
+    /// <summary>Whether to clamp this emitter's position to the world bounds, to prevent it from going out of bounds</summary>
     public bool ClampPosition
     {
         get => _ClampPosition;

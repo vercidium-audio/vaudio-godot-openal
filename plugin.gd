@@ -5,7 +5,7 @@ const VercidiumAudio = preload("res://addons/vaudio-godot-openal/main/VercidiumA
 const VercidiumAudioEmitter = preload("res://addons/vaudio-godot-openal/emitter/VercidiumAudioEmitter.cs")
 const VercidiumAudioMaterial = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioMaterial.cs")
 
-const VercidiumAudioSource = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSource.cs")
+const VercidiumAudioSource = preload("res://addons/vaudio-godot-openal/source/VercidiumAudioSource.cs")
 const VercidiumAudioSourceRelative = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceRelative.cs")
 const VercidiumAudioSourceAmbient = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceAmbient.cs")
 

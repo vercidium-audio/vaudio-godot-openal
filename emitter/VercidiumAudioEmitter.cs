@@ -155,7 +155,10 @@ public partial class VercidiumAudioEmitter : Node3D
     public vaudio.LowPassFilter AmbientFilter => emitter.AmbientFilter;
     public int GroupedEAXIndex => emitter.GroupedEAXIndex;
 
-    // Extra properties
+    public Action OnRaytracingCompleteCallback;
+    public Action<vaudio.Emitter> OnRaytracedByAnotherEmitterCallback;
+
+    // Top-level properties
     bool _IsMainListener;
     [Export]
     public bool IsMainListener
@@ -177,4 +180,30 @@ public partial class VercidiumAudioEmitter : Node3D
             _RaytraceOnce = value;
         }
     }
+
+    [ExportGroup("Orientation")]
+
+    float _Pitch;
+    [Export]
+    public float Pitch
+    {
+        get => _Pitch;
+        set
+        {
+            _Pitch = value;
+        }
+    }
+
+    float _Yaw;
+    [Export]
+    public float Yaw
+    {
+        get => _Yaw;
+        set
+        {
+            _Yaw = value;
+        }
+    }
+
+
 }

@@ -3,37 +3,13 @@ using System.Linq;
 
 namespace vaudio_godot_openal;
 
-[Tool]
-[GlobalClass]
 public partial class VercidiumAudioSource : ALSource3D
 {
-    private VercidiumAudio vercidiumAudio;
-    VercidiumAudioEmitter emitter;
-
-    public bool Raytraced => emitter != null && emitter.Raytraced;
-
-    private bool _PlayWhenRaytracingCompletes = true;
-    private bool _RaytraceOnce = true;
-    private bool _wasPlayingBeforeDeviceDestroyed = false;
-
-    [Export]
-    public bool PlayWhenRaytracingCompletes
-    {
-        get => _PlayWhenRaytracingCompletes;
-        set => _PlayWhenRaytracingCompletes = value;
-    }
-
-    [Export]
-    public bool RaytraceOnce
-    {
-        get => _RaytraceOnce;
-        set => _RaytraceOnce = value;
-    }
-
     [ExportGroup("Reverb")]
     
-    int _ReverbRayCount = 32;
+    int _ReverbRayCount = 0;
     [Export]
+    /// <summary>Number of reverb rays cast</summary>
     public int ReverbRayCount
     {
         get => _ReverbRayCount;
@@ -48,8 +24,9 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    int _ReverbBounceCount = 64;
+    int _ReverbBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per reverb ray</summary>
     public int ReverbBounceCount
     {
         get => _ReverbBounceCount;
@@ -66,6 +43,10 @@ public partial class VercidiumAudioSource : ALSource3D
 
     float _ReverbEnergyCap = 0.2f;
     [Export(PropertyHint.Range, "0.0,1.0")]
+    /// <summary>
+    /// The percentage of returning energy required for reverb to be at maximum volume. Defaults to 20% of the other emitter's <see cref="ReverbRayCount"/> * <see cref="ReverbBounceCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, less than 0 or greater than 1</exception>
     public float ReverbEnergyCap
     {
         get => _ReverbEnergyCap;
@@ -80,6 +61,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _MaxEchogramTime = 5000;
     [Export]
+    /// <summary>How long (in milliseconds) the echogram records data for. Returning reverb rays after this period will be ignored. Defaults to 5000ms</summary>
     public int MaxEchogramTime
     {
         get => _MaxEchogramTime;
@@ -96,6 +78,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _EchogramGranularity = 50;
     [Export]
+    /// <summary>The length (in milliseconds) of each entry in the echogram. Defaults to 50ms</summary>
     public int EchogramGranularity
     {
         get => _EchogramGranularity;
@@ -112,6 +95,9 @@ public partial class VercidiumAudioSource : ALSource3D
 
     bool _AffectsGroupedEAX = true;
     [Export]
+    /// <summary>
+    /// Controls whether this Emitter's EAX is blended to produced grouped EAX. Set this to false for listener emitters
+    /// </summary>
     public bool AffectsGroupedEAX
     {
         get => _AffectsGroupedEAX;
@@ -129,6 +115,10 @@ public partial class VercidiumAudioSource : ALSource3D
 
     float _OcclusionEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of occlusion energy required for this emitter to be at full volume. Defaults to 15% of the other emitter's <see cref="OcclusionRayCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float OcclusionEnergyCap
     {
         get => _OcclusionEnergyCap;
@@ -143,6 +133,10 @@ public partial class VercidiumAudioSource : ALSource3D
 
     float _PermeationEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of permeation energy required for this emitter to be at full volume. Defaults to 15% of the other emitter's <see cref="PermeationRayCount"/> * <see cref="PermeationBounceCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float PermeationEnergyCap
     {
         get => _PermeationEnergyCap;
@@ -160,6 +154,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _AmbientOcclusionRayCount = 0;
     [Export]
+    /// <summary>Number of ambient occlusion rays cast</summary>
     public int AmbientOcclusionRayCount
     {
         get => _AmbientOcclusionRayCount;
@@ -176,6 +171,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _AmbientOcclusionBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per ambient occlusion ray</summary>
     public int AmbientOcclusionBounceCount
     {
         get => _AmbientOcclusionBounceCount;
@@ -192,6 +188,10 @@ public partial class VercidiumAudioSource : ALSource3D
 
     float _AmbientOcclusionEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of occlusion energy required for the emitter to be at full volume. Defaults to 15% of this emitter's <see cref="AmbientOcclusionRayCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float AmbientOcclusionEnergyCap
     {
         get => _AmbientOcclusionEnergyCap;
@@ -206,6 +206,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _AmbientPermeationRayCount = 0;
     [Export]
+    /// <summary>Number of ambient permeation rays cast</summary>
     public int AmbientPermeationRayCount
     {
         get => _AmbientPermeationRayCount;
@@ -222,6 +223,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _AmbientPermeationBounceCount = 0;
     [Export]
+    /// <summary>Number of bounces per ambient permeation ray</summary>
     public int AmbientPermeationBounceCount
     {
         get => _AmbientPermeationBounceCount;
@@ -238,6 +240,10 @@ public partial class VercidiumAudioSource : ALSource3D
 
     float _AmbientPermeationEnergyCap = 0.15f;
     [Export]
+    /// <summary>
+    /// The percentage of permeation energy required for the emitter to be at full volume. Defaults to 15% of this emitter's <see cref="AmbientPermeationRayCount"/> * <see cref="AmbientPermeationBounceCount"/>.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, or less than 0</exception>
     public float AmbientPermeationEnergyCap
     {
         get => _AmbientPermeationEnergyCap;
@@ -255,6 +261,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _VisualisationRayCount = 0;
     [Export]
+    /// <summary>Number of visualisation rays cast</summary>
     public int VisualisationRayCount
     {
         get => _VisualisationRayCount;
@@ -271,6 +278,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _VisualisationBounceCount = 0;
     [Export]
+    /// <summary>Number of times each visualisation ray bounces</summary>
     public int VisualisationBounceCount
     {
         get => _VisualisationBounceCount;
@@ -287,6 +295,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _VisualisationUpdateFrequency = 500;
     [Export]
+    /// <summary>How often - in milliseconds - to cast visualisation rays. Defaults to 500</summary>
     public int VisualisationUpdateFrequency
     {
         get => _VisualisationUpdateFrequency;
@@ -306,6 +315,9 @@ public partial class VercidiumAudioSource : ALSource3D
 
     Godot.Color _TrailColor = new(1, 1, 1, 0.1f);
     [Export]
+    /// <summary>
+    /// The color of ray trails in the debug window (dev build only)
+    /// </summary>
     public Godot.Color TrailColor
     {
         get => _TrailColor;
@@ -318,8 +330,11 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    Godot.Color _ReverbColor = new(27.0f / 255.0f, 247.0f / 255.0f, 255.0f / 255.0f, 0.2f);
+    Godot.Color _ReverbColor = new(0.11f, 0.97f, 1.0f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of reverb rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color ReverbColor
     {
         get => _ReverbColor;
@@ -332,8 +347,11 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    Godot.Color _OcclusionColor = new(27.0f / 255.0f, 247.0f / 255.0f, 255.0f / 255.0f, 0.2f);
+    Godot.Color _OcclusionColor = new(0.44f, 1.0f, 0.64f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of occlusion rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color OcclusionColor
     {
         get => _OcclusionColor;
@@ -346,8 +364,11 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    Godot.Color _PermeationColor = new(255.0f / 255.0f, 127.0f / 255.0f, 42.0f / 255.0f, 0.2f);
+    Godot.Color _PermeationColor = new(1.0f, 0.5f, 0.17f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of permeation rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color PermeationColor
     {
         get => _PermeationColor;
@@ -360,8 +381,11 @@ public partial class VercidiumAudioSource : ALSource3D
         }
     }
 
-    Godot.Color _AmbientPermeationColor = new(255.0f / 255.0f, 204.0f / 255.0f, 0.0f, 0.2f);
+    Godot.Color _AmbientPermeationColor = new(1.0f, 0.8f, 0.0f, 0.2f);
     [Export]
+    /// <summary>
+    /// The color of ambientPermeation rays in the debug window (dev build only)
+    /// </summary>
     public Godot.Color AmbientPermeationColor
     {
         get => _AmbientPermeationColor;
@@ -379,6 +403,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _Type;
     [Export]
+    /// <summary>User-defined type for this emitter</summary>
     public int Type
     {
         get => _Type;
@@ -393,6 +418,9 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _RefreshRayCount = 16;
     [Export]
+    /// <summary>
+    /// The number of trails that are rebuilt from scratch each frame to prevent staleness when the listener moves. Clamped to minimum of 0.
+    /// </summary>
     public int RefreshRayCount
     {
         get => _RefreshRayCount;
@@ -407,6 +435,9 @@ public partial class VercidiumAudioSource : ALSource3D
 
     float _RefreshDistanceThreshold = 1.0f;
     [Export]
+    /// <summary>
+    /// A ray trail will be re-created if an old ray bounce position is too far away from the new ray bounce position. This setting controls the allowed distance between old and new ray bounce positions. Defaults to 1.0f. Clamped to minimum of 0.
+    /// </summary>
     public float RefreshDistanceThreshold
     {
         get => _RefreshDistanceThreshold;
@@ -421,6 +452,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     int _ScatteringSeed = Random.Shared.Next();
     [Export]
+    /// <summary>A seed used to randomise scattering vectors</summary>
     public int ScatteringSeed
     {
         get => _ScatteringSeed;
@@ -429,12 +461,13 @@ public partial class VercidiumAudioSource : ALSource3D
             _ScatteringSeed = value;
 
             if (emitter != null)
-                emitter.RefreshRayCount = value;
+                emitter.ScatteringSeed = value;
         }
     }
 
     bool _ClampPosition = true;
     [Export]
+    /// <summary>Whether to clamp this emitter's position to the world bounds, to prevent it from going out of bounds</summary>
     public bool ClampPosition
     {
         get => _ClampPosition;
@@ -445,186 +478,5 @@ public partial class VercidiumAudioSource : ALSource3D
             if (emitter != null)
                 emitter.ClampPosition = value;
         }
-    }
-
-    public override void _EnterTree()
-    {
-        vercidiumAudio = this.GetVercidiumAudioParent();
-
-        if (!Engine.IsEditorHint())
-        {
-            // Register for a callback to re-play sounds when changing devices
-            RegisterDeviceRecreatedCallback(OnDeviceRecreated);
-        }
-
-        // Must create the emitter after the parent VercidiumAudio node is initialised
-        CreateEmitter();
-    }
-
-    public override string[] _GetConfigurationWarnings()
-    {
-        var baseWarnings = base._GetConfigurationWarnings();
-
-        var sceneRoot = Engine.IsEditorHint() ? GetTree()?.EditedSceneRoot : GetTree()?.CurrentScene;
-        if (sceneRoot == null)
-            return baseWarnings;
-
-        var vercidiumAudioNode = sceneRoot.GetChildren().OfType<VercidiumAudio>().FirstOrDefault();
-        if (vercidiumAudioNode == null)
-            return [.. baseWarnings, "No VercidiumAudio node found. Ensure a VercidiumAudio node exists higher up the tree."];
-
-        // Find the top-level ancestor of this node (direct child of scene root)
-        var ancestor = this as Node;
-        while (ancestor.GetParent() != sceneRoot)
-            ancestor = ancestor.GetParent();
-
-        if (ancestor.GetIndex() < vercidiumAudioNode.GetIndex())
-            return [.. baseWarnings, "This node must be lower in the scene tree than the VercidiumAudio node."];
-
-        return baseWarnings;
-    }
-
-    public void CreateEmitter()
-    {
-        emitter = new VercidiumAudioEmitter()
-        {
-            Name = $"{Name}-Emitter",
-            OnRaytracedByAnotherEmitterCallback = OnRaytracedByAnotherEmitter,
-
-            // Reverb
-            ReverbRayCount = ReverbRayCount,
-            ReverbBounceCount = ReverbBounceCount,
-            ReverbEnergyCap = _ReverbEnergyCap,
-            MaxEchogramTime = MaxEchogramTime,
-            EchogramGranularity = EchogramGranularity,
-            AffectsGroupedEAX = AffectsGroupedEAX,
-            HasRelativeReverb = false,
-
-            // Muffling
-            OcclusionRayCount = 0,
-            OcclusionBounceCount = 0,
-            PermeationRayCount = 0,
-            PermeationBounceCount = 0,
-            OcclusionEnergyCap = OcclusionEnergyCap,
-            PermeationEnergyCap = PermeationEnergyCap,
-
-            // Ambience
-            AmbientOcclusionRayCount = AmbientOcclusionRayCount,
-            AmbientOcclusionBounceCount = AmbientOcclusionBounceCount,
-            AmbientPermeationRayCount = AmbientPermeationRayCount,
-            AmbientPermeationBounceCount = AmbientPermeationBounceCount,
-            AmbientOcclusionEnergyCap = AmbientOcclusionEnergyCap,
-            AmbientPermeationEnergyCap = AmbientPermeationEnergyCap,
-
-            // Visualisation
-            VisualisationRayCount = VisualisationRayCount,
-            VisualisationBounceCount = VisualisationBounceCount,
-            VisualisationUpdateFrequency = VisualisationUpdateFrequency,
-
-            // Debug rendering
-            TrailColor = TrailColor,
-            OcclusionColor = OcclusionColor,
-            PermeationColor = PermeationColor,
-            AmbientPermeationColor = AmbientPermeationColor,
-
-            // Advanced
-            Type = Type,
-            RefreshRayCount = RefreshRayCount,
-            RefreshDistanceThreshold = RefreshDistanceThreshold,
-            ScatteringSeed = ScatteringSeed,
-            ClampPosition = ClampPosition,
-            ReservedEmitterTargets = 0,
-        };
-
-        AddChild(emitter);
-    }
-
-    void OnDeviceRecreated()
-    {
-        // Re-play if we were playing before the device was destroyed
-        if (_wasPlayingBeforeDeviceDestroyed)
-        {
-            _wasPlayingBeforeDeviceDestroyed = false;
-            Play();
-        }
-    }
-
-    void OnRaytracedByAnotherEmitter(vaudio.Emitter other)
-    {
-        ApplyRaytracingResults(other);
-
-        if (PlayWhenRaytracingCompletes)
-            Play();
-
-        // Remove our emitter after we've been raytraced (this is a short sound that doesn't need continuous raytracing)
-        if (RaytraceOnce)
-        {
-            Debug.Assert(emitter != null);
-
-            RemoveChild(emitter);
-            emitter = null;
-        }
-    }
-
-    bool played = false;
-
-    public override bool Play()
-    {
-        if (!Raytraced)
-        {
-            PlayWhenRaytracingCompletes = true;
-            return false;
-        }
-
-        return played = base.Play();
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-
-        if (Raytraced)
-        {
-            if (!played && PlayWhenRaytracingCompletes)
-                Play();
-
-            ApplyRaytracingResults(vercidiumAudio.listener.emitter);
-        }
-    }
-
-    void ApplyRaytracingResults(vaudio.Emitter other)
-    {
-        effect = vercidiumAudio.GetReverbEffect(emitter);
-
-        if (other.HasRaytracedTarget(emitter.emitter))
-        {
-            var vaudioFilter = other.GetTargetFilter(emitter.emitter);
-            UpdateFilter(vaudioFilter.GainLF, vaudioFilter.GainHF, true);
-        }
-    }
-
-    public override void OnDeviceDestroyed()
-    {
-        // Track if we were playing so we can re-play after device recreation
-        _wasPlayingBeforeDeviceDestroyed = played && Looping;
-
-        // Reset played state since sources are being destroyed
-        played = false;
-
-        base.OnDeviceDestroyed();
-    }
-
-    public override void _ExitTree()
-    {
-        if (Engine.IsEditorHint())
-        {
-            base._ExitTree();
-            return;
-        }
-
-        // Unregister the device recreated callback (only registered when not in editor)
-        ALManager.instance?.UnregisterDeviceRecreatedCallback(OnDeviceRecreated);
-
-        base._ExitTree();
     }
 }

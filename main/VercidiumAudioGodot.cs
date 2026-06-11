@@ -125,9 +125,9 @@ public partial class VercidiumAudio : Node
         }
 
         // Render the debug window from the perspective of the main listener
-       // context.CameraPosition = ToVAudio(listener.GlobalPosition);
-        //context.CameraPitch = listener.Pitch;
-        //context.CameraYaw = listener.Yaw;
+        world.CameraPosition = ToVAudio(listener.GlobalPosition);
+        world.CameraPitch = listener.Pitch;
+        world.CameraYaw = listener.Yaw;
         world.FieldOfView = float.DegreesToRadians(90);
 
         world.Update();
