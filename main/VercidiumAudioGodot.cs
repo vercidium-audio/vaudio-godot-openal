@@ -19,10 +19,32 @@ public partial class VercidiumAudio : Node
             LogCallback = Log,
             Position = new(Position.X, Position.Y, Position.Z),
             Size = new(Size.X, Size.Y, Size.Z),
-            RenderingEnabled = RenderingEnabled,
+            Epsilon = Epsilon,
+            WorldIsIndoors = WorldIsIndoors,
+
+            // Reverb
             MaximumGroupedEAXCount = MaximumGroupedEAXCount,
-            OnReverbUpdated = OnReverbUpdated
+            OnReverbUpdated = OnReverbUpdated,
+
+            // Air absorption
+            MetersPerUnit = MetersPerUnit,
+            InverseSpeedOfSound = InverseSpeedOfSound,
+            ReferenceFrequencyLF = ReferenceFrequencyLF,
+            ReferenceFrequencyHF = ReferenceFrequencyHF,
+
+            // Emitters 
+            EmittersOutsideTheWorldAreMuffled = EmittersOutsideTheWorldAreMuffled,
+
+            // Threading
+            MaximumConcurrencyLevel = MaximumConcurrencyLevel,
+            WorkItemCount = WorkItemCount,
+
+            RenderingEnabled = RenderingEnabled,
         };
+
+        world.AirAbsorption.Humidity = Humidity;
+        world.AirAbsorption.Temperature = Temperature;
+        world.AirAbsorption.Pressure = Pressure;
 
         // Create reverb effects
         OnDeviceRecreated();
