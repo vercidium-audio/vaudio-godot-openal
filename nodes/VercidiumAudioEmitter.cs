@@ -180,34 +180,6 @@ public partial class VercidiumAudioEmitter : Node3D
     public Action OnRaytracingCompleteCallback;
     public Action<vaudio.Emitter> OnRaytracedByAnotherEmitterCallback;
 
-    bool _AffectsGroupedEAX = true;
-    [Export]
-    public bool AffectsGroupedEAX
-    {
-        get => _AffectsGroupedEAX;
-        set
-        {
-            _AffectsGroupedEAX = value;
-
-            if (emitter != null)
-                emitter.AffectsGroupedEAX = value;
-        }
-    }
-
-    bool _HasRelativeReverb = false;
-    [Export]
-    public bool HasRelativeReverb
-    {
-        get => _HasRelativeReverb;
-        set
-        {
-            _HasRelativeReverb = value;
-
-            if (emitter != null)
-                emitter.HasRelativeReverb = value;
-        }
-    }
-
     [ExportGroup("Orientation")]
 
     float _Pitch;
@@ -233,7 +205,7 @@ public partial class VercidiumAudioEmitter : Node3D
     }
 
 
-    [ExportGroup("Raytracing Quality")]
+    [ExportGroup("Reverb")]
 
     int _ReverbRayCount = 128;
     [Export]
@@ -269,6 +241,21 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
+    float _ReverbEnergyCap = 0.2f;
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    public float ReverbEnergyCap
+    {
+        get => _ReverbEnergyCap;
+        set
+        {
+            _ReverbEnergyCap = value;
+
+            if (emitter != null)
+            {
+                emitter.ReverbEnergyCap = emitter.ReverbRayCount * emitter.ReverbBounceCount * value;
+            }
+        }
+    }
 
     int _MaxEchogramTime = 5000;
     [Export]
@@ -302,23 +289,66 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    float _ReverbEnergyCap = 0.2f;
-    [Export(PropertyHint.Range, "0.0,1.0")]
-    public float ReverbEnergyCap
-    { 
-        get => _ReverbEnergyCap;
+    bool _AffectsGroupedEAX = false;
+    [Export]
+    public bool AffectsGroupedEAX
+    {
+        get => _AffectsGroupedEAX;
         set
         {
-            _ReverbEnergyCap = value;
+            _AffectsGroupedEAX = value;
 
             if (emitter != null)
-            {
-                emitter.ReverbEnergyCap = emitter.ReverbRayCount * emitter.ReverbBounceCount * value;
-            }
+                emitter.AffectsGroupedEAX = value;
         }
     }
 
-    int _OcclusionRayCount = 128;
+    bool _HasRelativeReverb = true;
+    [Export]
+    public bool HasRelativeReverb
+    {
+        get => _HasRelativeReverb;
+        set
+        {
+            _HasRelativeReverb = value;
+
+            if (emitter != null)
+                emitter.HasRelativeReverb = value;
+        }
+    }
+
+    float _RelativeReverbInnerThreshold = 0.6f;
+    [Export]
+    public float RelativeReverbInnerThreshold
+    {
+        get => _RelativeReverbInnerThreshold;
+        set
+        {
+            _RelativeReverbInnerThreshold = value;
+
+            if (emitter != null)
+                emitter.RelativeReverbInnerThreshold = value;
+        }
+    }
+
+    float _RelativeReverbOuterThreshold = 0.6f;
+    [Export]
+    public float RelativeReverbOuterThreshold
+    {
+        get => _RelativeReverbOuterThreshold;
+        set
+        {
+            _RelativeReverbOuterThreshold = value;
+
+            if (emitter != null)
+                emitter.RelativeReverbOuterThreshold = value;
+        }
+    }
+
+
+    [ExportGroup("Muffling")]
+
+    int _OcclusionRayCount = 256;
     [Export]
     public int OcclusionRayCount
     { 
@@ -345,6 +375,20 @@ public partial class VercidiumAudioEmitter : Node3D
                 emitter.OcclusionBounceCount = _OcclusionBounceCount;
         }
     }
+    
+    float _OcclusionEnergyCap = 0.15f;
+    [Export]
+    public float OcclusionEnergyCap
+    { 
+        get => _OcclusionEnergyCap;
+        set
+        {
+            _OcclusionEnergyCap = Math.Max(0, value);
+
+            if (emitter != null)
+                emitter.OcclusionEnergyCap = _OcclusionEnergyCap;
+        }
+    }
 
     int _PermeationRayCount = 128;
     [Export]
@@ -360,7 +404,7 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
     
-    int _PermeationBounceCount = 4;
+    int _PermeationBounceCount = 2;
     [Export]
     public int PermeationBounceCount
     { 
@@ -373,6 +417,23 @@ public partial class VercidiumAudioEmitter : Node3D
                 emitter.PermeationBounceCount = _PermeationBounceCount;
         }
     }
+
+    float _PermeationEnergyCap = 0.15f;
+    [Export]
+    public float PermeationEnergyCap
+    {
+        get => _PermeationEnergyCap;
+        set
+        {
+            _PermeationEnergyCap = Math.Max(0, value);
+
+            if (emitter != null)
+                emitter.PermeationEnergyCap = _PermeationEnergyCap;
+        }
+    }
+
+
+    [ExportGroup("Ambience")]
 
     int _AmbientOcclusionRayCount = 128;
     [Export]
@@ -399,6 +460,20 @@ public partial class VercidiumAudioEmitter : Node3D
 
             if (emitter != null)
                 emitter.AmbientOcclusionBounceCount = _AmbientOcclusionBounceCount;
+        }
+    }
+
+    float _AmbientOcclusionEnergyCap = 0.15f;
+    [Export]
+    public float AmbientOcclusionEnergyCap
+    {
+        get => _AmbientOcclusionEnergyCap;
+        set
+        {
+            _AmbientOcclusionEnergyCap = Math.Max(0, value);
+
+            if (emitter != null)
+                emitter.AmbientOcclusionEnergyCap = _AmbientOcclusionEnergyCap;
         }
     }
 
@@ -429,6 +504,22 @@ public partial class VercidiumAudioEmitter : Node3D
                 emitter.AmbientPermeationBounceCount = _AmbientPermeationBounceCount;
         }
     }
+
+    float _AmbientPermeationEnergyCap = 0.15f;
+    [Export]
+    public float AmbientPermeationEnergyCap
+    {
+        get => _AmbientPermeationEnergyCap;
+        set
+        {
+            _AmbientPermeationEnergyCap = Math.Max(0, value);
+
+            if (emitter != null)
+                emitter.AmbientPermeationEnergyCap = _AmbientPermeationEnergyCap;
+        }
+    }
+
+    [ExportGroup("Visualisation")]
 
     int _VisualisationRayCount = 0;
     [Export]
@@ -469,6 +560,165 @@ public partial class VercidiumAudioEmitter : Node3D
 
             if (emitter != null)
                 emitter.VisualisationUpdateFrequency = _VisualisationUpdateFrequency;
+        }
+    }
+
+
+    [ExportGroup("Debug Rendering")]
+
+    Godot.Color _TrailColor = new(1, 1, 1, 0.1f);
+    [Export]
+    public Godot.Color TrailColor
+    {
+        get => _TrailColor;
+        set
+        {
+            _TrailColor = value;
+
+            if (emitter != null)
+                emitter.TrailColor = ToVAudio(value);
+        }
+    }
+
+    Godot.Color _ReverbColor = new(27.0f / 255.0f, 247.0f / 255.0f, 255.0f / 255.0f, 0.2f);
+    [Export]
+    public Godot.Color ReverbColor
+    {
+        get => _ReverbColor;
+        set
+        {
+            _ReverbColor = value;
+
+            if (emitter != null)
+                emitter.ReverbColor = ToVAudio(value);
+        }
+    }
+
+    Godot.Color _OcclusionColor = new(27.0f / 255.0f, 247.0f / 255.0f, 255.0f / 255.0f, 0.2f);
+    [Export]
+    public Godot.Color OcclusionColor
+    {
+        get => _OcclusionColor;
+        set
+        {
+            _OcclusionColor = value;
+
+            if (emitter != null)
+                emitter.OcclusionColor = ToVAudio(value);
+        }
+    }
+
+    Godot.Color _PermeationColor = new(255.0f / 255.0f, 127.0f / 255.0f, 42.0f / 255.0f, 0.2f);
+    [Export]
+    public Godot.Color PermeationColor
+    {
+        get => _PermeationColor;
+        set
+        {
+            _PermeationColor = value;
+
+            if (emitter != null)
+                emitter.PermeationColor = ToVAudio(value);
+        }
+    }
+
+    Godot.Color _AmbientPermeationColor = new(255.0f / 255.0f, 204.0f / 255.0f, 0.0f, 0.2f);
+    [Export]
+    public Godot.Color AmbientPermeationColor
+    {
+        get => _AmbientPermeationColor;
+        set
+        {
+            _AmbientPermeationColor = value;
+
+            if (emitter != null)
+                emitter.AmbientPermeationColor = ToVAudio(value);
+        }
+    }
+
+    [ExportGroup("Advanced")]
+
+    int _Type;
+    [Export]
+    public int Type
+    {
+        get => _Type;
+        set
+        {
+            _Type = value;
+
+            if (emitter != null)
+                emitter.Type = value;
+        }
+    }
+
+    int _ReservedEmitterTargets;
+    [Export]
+    public int ReservedEmitterTargets
+    {
+        get => _ReservedEmitterTargets;
+        set
+        {
+            _ReservedEmitterTargets = value;
+
+            if (emitter != null)
+                emitter.ReservedEmitterTargets = value;
+        }
+    }
+
+    int _RefreshRayCount = 16;
+    [Export]
+    public int RefreshRayCount
+    {
+        get => _RefreshRayCount;
+        set
+        {
+            _RefreshRayCount = value;
+
+            if (emitter != null)
+                emitter.RefreshRayCount = value;
+        }
+    }
+
+    float _RefreshDistanceThreshold = 1.0f;
+    [Export]
+    public float RefreshDistanceThreshold
+    {
+        get => _RefreshDistanceThreshold;
+        set
+        {
+            _RefreshDistanceThreshold = value;
+
+            if (emitter != null)
+                emitter.RefreshDistanceThreshold = value;
+        }
+    }
+
+    int _ScatteringSeed = Random.Shared.Next();
+    [Export]
+    public int ScatteringSeed
+    {
+        get => _ScatteringSeed;
+        set
+        {
+            _ScatteringSeed = value;
+
+            if (emitter != null)
+                emitter.RefreshRayCount = value;
+        }
+    }
+
+    bool _ClampPosition = true;
+    [Export]
+    public bool ClampPosition
+    {
+        get => _ClampPosition;
+        set
+        {
+            _ClampPosition = value;
+
+            if (emitter != null)
+                emitter.ClampPosition = value;
         }
     }
 }

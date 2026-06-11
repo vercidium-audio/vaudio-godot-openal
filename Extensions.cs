@@ -6,6 +6,8 @@ namespace vaudio_godot_openal;
 
 internal static class Extensions
 {
+    public static vaudio.Color ToVAudio(Godot.Color c) => new(c.R, c.G, c.B, c.A);
+
     public static vaudio.Vector ToVAudio(Vector3 v) => new(v.X, v.Y, v.Z);
     public static Vector3 FromVAudio(vaudio.Vector v) => new(v.X, v.Y, v.Z);
 

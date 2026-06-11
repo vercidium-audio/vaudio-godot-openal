@@ -14,23 +14,52 @@ public partial class VercidiumAudio : Node
             Position = new vaudio.FuncPosition(() => ToVAudio(node.GlobalPosition)),
             OnRaytracingComplete = OnRaytracingComplete,
             OnRaytracedByAnotherEmitter = OnRaytracedByAnotherEmitter,
+
+            // Reverb
             ReverbRayCount = node.ReverbRayCount,
             ReverbBounceCount = node.ReverbBounceCount,
             ReverbEnergyCap = node.ReverbRayCount * node.ReverbBounceCount * node.ReverbEnergyCap,
             MaxEchogramTime = node.MaxEchogramTime,
             EchogramGranularity = node.EchogramGranularity,
+            AffectsGroupedEAX = node.AffectsGroupedEAX,
+            HasRelativeReverb = node.HasRelativeReverb,
+            RelativeReverbInnerThreshold = node.RelativeReverbInnerThreshold,
+            RelativeReverbOuterThreshold = node.RelativeReverbOuterThreshold,
+
+            // Muffling
             OcclusionRayCount = node.OcclusionRayCount,
             OcclusionBounceCount = node.OcclusionBounceCount,
             PermeationRayCount = node.PermeationRayCount,
             PermeationBounceCount = node.PermeationBounceCount,
+            OcclusionEnergyCap = node.OcclusionEnergyCap,
+            PermeationEnergyCap = node.PermeationEnergyCap,
+
+            // Ambience
             AmbientOcclusionRayCount = node.AmbientOcclusionRayCount,
             AmbientOcclusionBounceCount = node.AmbientOcclusionBounceCount,
             AmbientPermeationRayCount = node.AmbientPermeationRayCount,
             AmbientPermeationBounceCount = node.AmbientPermeationBounceCount,
+            AmbientOcclusionEnergyCap = node.AmbientOcclusionEnergyCap,
+            AmbientPermeationEnergyCap = node.AmbientPermeationEnergyCap,
+
+            // Visualisation
             VisualisationRayCount = node.VisualisationRayCount,
             VisualisationBounceCount = node.VisualisationBounceCount,
-            AffectsGroupedEAX = node.AffectsGroupedEAX,
-            HasRelativeReverb = node.HasRelativeReverb,
+            VisualisationUpdateFrequency = node.VisualisationUpdateFrequency,
+
+            // Debug rendering
+            TrailColor = ToVAudio(node.TrailColor),
+            OcclusionColor = ToVAudio(node.OcclusionColor),
+            PermeationColor = ToVAudio(node.PermeationColor),
+            AmbientPermeationColor = ToVAudio(node.AmbientPermeationColor),
+
+            // Advanced
+            Type = node.Type,
+            RefreshRayCount = node.RefreshRayCount,
+            RefreshDistanceThreshold = node.RefreshDistanceThreshold,
+            ScatteringSeed = node.ScatteringSeed,
+            ClampPosition = node.ClampPosition,
+            ReservedEmitterTargets = node.ReservedEmitterTargets,
         };
 
         world.AddEmitter(emitter);
