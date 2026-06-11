@@ -9,39 +9,12 @@ const VercidiumAudioSource = preload("res://addons/vaudio-godot-openal/nodes/Ver
 const VercidiumAudioSourceRelative = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceRelative.cs")
 const VercidiumAudioSourceAmbient = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceAmbient.cs")
 
-const CSPROJ_INSERT = """	<PropertyGroup>
-    	<!-- Replace this with the path to your vaudio SDK -->
-		<VAudioDir>path/to/your/vaudio/folder</VAudioDir>
-    </PropertyGroup>
-
-    <!-- Add vaudio.dll to your project -->
+const CSPROJ_INSERT = """    <!-- Add vaudio.dll to your project -->
     <ItemGroup>
-    	<Reference Include="vaudio">
-    		<HintPath>$(VAudioDir)\\vaudio.dll</HintPath>
-    	</Reference>
-    </ItemGroup>
-
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    	<!-- Copy the license file to the build directory -->
-    	<Copy SourceFiles="$(VAudioDir)\\vaudio.license" DestinationFolder="$(OutDir)" />
-
-    	<!-- Copy dependencies to the build directory -->
-    	<Copy SourceFiles="$(VAudioDir)\\glfw3.dll" DestinationFolder="$(OutDir)" />
-
-    	<!-- Copy native dependencies to the project directory -->
-    	<Copy SourceFiles="$(VAudioDir)\\libSkiaSharp.dll" DestinationFolder="$(ProjectDir)" />
-    	<Copy SourceFiles="$(VAudioDir)\\libHarfBuzzSharp.dll" DestinationFolder="$(ProjectDir)" />
-
-    	<!-- Copy the resource folder to the build directory -->
-    	<ItemGroup>
-    		<ResourceFiles Include="$(VAudioDir)\\resource\\**\\*.*" />
-    	</ItemGroup>
-
-    	<Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(OutDir)\\resource\\%(RecursiveDir)" />
-
-    	<!-- GODOT ONLY: copy the resource folder to project directory -->
-    	<Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ProjectDir)\\resource\\%(RecursiveDir)" />
-    </Target>"""
+        <Reference Include="vaudio">
+            <HintPath>path\\to\\your\\vaudio.dll</HintPath>
+        </Reference>
+    </ItemGroup>"""
 
 func _enter_tree():
 	var icon = preload("res://addons/vaudio-godot-openal/icons/vercidium.svg")
@@ -99,9 +72,9 @@ func _setup_project():
 
 	_setup_done = true
 
-	if "VAudioDir" in content:
-		if "path/to/your/vaudio/folder" in content:
-			push_error("[vaudio-godot-openal] csproj is invalid (%s) - please replace 'path/to/your/vaudio/folder' with your actual vaudio path, then disable and enable the VercidiumAudio plugin" % ProjectSettings.globalize_path(csproj_path))
+	if "vaudio.dll" in content:
+		if "path\\to\\your\\vaudio.dll" in content:
+			push_error("[vaudio-godot-openal] csproj is invalid (%s) - please replace 'path\\to\\your\\vaudio.dll' with your actual vaudio.dll path, then disable and enable the VercidiumAudio plugin" % ProjectSettings.globalize_path(csproj_path))
 		else:
 			print("[vaudio-godot-openal] csproj configured correctly")
 		return
@@ -117,7 +90,7 @@ func _setup_project():
 	if file:
 		file.store_string(new_content)
 		file.close()
-		push_warning("[vaudio-godot-openal] Added vaudio references to ", ProjectSettings.globalize_path(csproj_path), " - please replace 'path/to/your/vaudio/folder' with your actual vaudio path, then disable and enable the VercidiumAudio plugin")
+		push_warning("[vaudio-godot-openal] Added vaudio references to ", ProjectSettings.globalize_path(csproj_path), " - please replace 'path\\to\\your\\vaudio.dll' with your actual vaudio.dll path, then disable and enable the VercidiumAudio plugin")
 
 func _enable_plugin():
 	if not DirAccess.dir_exists_absolute("res://addons/godot-openal"):
