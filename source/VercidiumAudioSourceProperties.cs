@@ -114,7 +114,7 @@ public partial class VercidiumAudioSource : ALSource3D
     [ExportGroup("Muffling")]
 
     float _OcclusionEnergyCap = 0.15f;
-    [Export]
+    [Export(PropertyHint.Range, "0.0,1.0")]
     /// <summary>
     /// The percentage of occlusion energy required for this emitter to be at full volume. Defaults to 15% of the other emitter's <see cref="OcclusionRayCount"/>.
     /// </summary>
@@ -132,7 +132,7 @@ public partial class VercidiumAudioSource : ALSource3D
     }
 
     float _PermeationEnergyCap = 0.15f;
-    [Export]
+    [Export(PropertyHint.Range, "0.0,1.0")]
     /// <summary>
     /// The percentage of permeation energy required for this emitter to be at full volume. Defaults to 15% of the other emitter's <see cref="PermeationRayCount"/> * <see cref="PermeationBounceCount"/>.
     /// </summary>
@@ -187,7 +187,7 @@ public partial class VercidiumAudioSource : ALSource3D
     }
 
     float _AmbientOcclusionEnergyCap = 0.15f;
-    [Export]
+    [Export(PropertyHint.Range, "0.0,1.0")]
     /// <summary>
     /// The percentage of occlusion energy required for the emitter to be at full volume. Defaults to 15% of this emitter's <see cref="AmbientOcclusionRayCount"/>.
     /// </summary>
@@ -239,7 +239,7 @@ public partial class VercidiumAudioSource : ALSource3D
     }
 
     float _AmbientPermeationEnergyCap = 0.15f;
-    [Export]
+    [Export(PropertyHint.Range, "0.0,1.0")]
     /// <summary>
     /// The percentage of permeation energy required for the emitter to be at full volume. Defaults to 15% of this emitter's <see cref="AmbientPermeationRayCount"/> * <see cref="AmbientPermeationBounceCount"/>.
     /// </summary>

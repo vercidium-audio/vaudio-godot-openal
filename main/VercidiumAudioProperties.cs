@@ -103,7 +103,7 @@ public partial class VercidiumAudio : Node
     [ExportGroup("AirAbsorption")]
 
     float _MetersPerUnit = 1;
-    [Export(PropertyHint.Range, "0.0,1.0,or_greater")]
+    [Export(PropertyHint.Range, "0.0001,1.0,or_greater")]
     /// <summary>
     /// Gets meters per world unit. Affects air absorption and reverb calculation.
     /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity or less than or equal to 0</exception>
@@ -120,21 +120,22 @@ public partial class VercidiumAudio : Node
         }
     }
 
-    float _InverseSpeedOfSound = 1.0f / 343.0f;
-    [Export(PropertyHint.Range, "0.0,1.0,or_greater")]
+    float _SpeedOfSound = 343.0f;
+
+    [Export(PropertyHint.Range, "0.0001,1000.0,1,or_greater")]
     /// <summary>
-    /// Inverse speed of sound in seconds per meter. Defaults to 1.0f / 343.0f. Affects reverb calculation
+    /// Speed of sound in seconds per meter. Defaults to 343.0f. Affects reverb calculation
     /// </summary>
     /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity or less than or equal to 0</exception>
-    public float InverseSpeedOfSound
+    public float SpeedOfSound
     {
-        get => _InverseSpeedOfSound;
+        get => _SpeedOfSound;
         set
         {
-            _InverseSpeedOfSound = MathF.Max(0.0001f, value);
+            _SpeedOfSound = MathF.Max(0.0001f, value);
 
             if (world != null)
-                world.InverseSpeedOfSound = _InverseSpeedOfSound;
+                world.InverseSpeedOfSound = 1.0f / _SpeedOfSound;
         }
     }
 
@@ -184,7 +185,7 @@ public partial class VercidiumAudio : Node
     }
 
     float _ReferenceFrequencyLF = 300;
-    [Export(PropertyHint.Range, "0.0,1000,1,or_greater")]
+    [Export(PropertyHint.Range, "0.0001,1000,1,or_greater")]
     /// <summary>
     /// Low-frequency reference (Hz) for air absorption, reverb, and material scattering
     /// </summary>
@@ -202,7 +203,7 @@ public partial class VercidiumAudio : Node
     }
 
     float _ReferenceFrequencyHF = 4000;
-    [Export(PropertyHint.Range, "0.0,20000,1,or_greater")]
+    [Export(PropertyHint.Range, "0.0001,20000,1,or_greater")]
     /// <summary>
     /// High-frequency reference (Hz) for air absorption, reverb, and material scattering
     /// </summary>
@@ -243,7 +244,7 @@ public partial class VercidiumAudio : Node
     [ExportGroup("Threading")]
 
     int _MaximumConcurrencyLevel = vaudio.ThreadStatistics.BackgroundThreadCount;
-    [Export(PropertyHint.Range, "1,1,1,or_greater")]
+    [Export(PropertyHint.Range, "1,32,1,or_greater")]
     public int MaximumConcurrencyLevel
     {
         get => _MaximumConcurrencyLevel;
@@ -257,7 +258,7 @@ public partial class VercidiumAudio : Node
     }
 
     int _WorkItemCount = 128;
-    [Export(PropertyHint.Range, "1,128,1,or_greater")]
+    [Export(PropertyHint.Range, "1,256,1,or_greater")]
     /// <summary>
     /// The number of work items to split trails across for load balancing. A higher workItemCount helps evenly distribute work across all threads.
     /// </summary>

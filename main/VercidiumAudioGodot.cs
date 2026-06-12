@@ -28,7 +28,7 @@ public partial class VercidiumAudio : Node
 
             // Air absorption
             MetersPerUnit = MetersPerUnit,
-            InverseSpeedOfSound = InverseSpeedOfSound,
+            InverseSpeedOfSound = 1.0f /    SpeedOfSound,
             ReferenceFrequencyLF = ReferenceFrequencyLF,
             ReferenceFrequencyHF = ReferenceFrequencyHF,
 

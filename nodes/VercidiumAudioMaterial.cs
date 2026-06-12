@@ -155,7 +155,7 @@ public partial class VercidiumAudioMaterial : Node
     /// <summary>
     /// Low-frequency transmission in dB/m (0.0 or greater)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0,10000.0")]
+    [Export(PropertyHint.Range, "0.0001f,100.0,1,or_greater")]
     public float TransmissionLF
     {
         get => _TransmissionLF;
@@ -175,7 +175,7 @@ public partial class VercidiumAudioMaterial : Node
     /// <summary>
     /// High-frequency transmission in dB/m (0.0 or greater)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0,10000.0")]
+    [Export(PropertyHint.Range, "0.0001f,100.0,1,or_greater")]
     public float TransmissionHF
     {
         get => _TransmissionHF;
