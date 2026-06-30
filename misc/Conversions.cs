@@ -2,7 +2,7 @@ namespace vaudio_godot_openal;
 
 public static class Conversions
 {
-    public static List<vaudio.Vector> ConvertMeshToVector3FList(string name, Mesh mesh, out vaudio.Vector minOut, out vaudio.Vector maxOut)
+    public static List<vaudio.Vector> ConvertMeshToVector3FList(string name, Mesh mesh, out vaudio.Vector minOut, out vaudio.Vector maxOut, VAWorld world)
     {
         List<vaudio.Vector> vertices = [];
 
@@ -111,7 +111,7 @@ public static class Conversions
             min = vaudio.Vector.Zero;
             max = vaudio.Vector.Zero;
 
-            VAWorld.LogWarning($"Mesh {name} will not affect raytracing as it has no vertices");
+            world.LogWarning($"Mesh {name} will not affect raytracing as it has no vertices");
         }
 
         minOut = min;
@@ -120,7 +120,7 @@ public static class Conversions
         return vertices;
     }
 
-    public static List<vaudio.Vector> ConvertConcavePolygonToVector3FList(string name, ConcavePolygonShape3D shape, out vaudio.Vector min, out vaudio.Vector max)
+    public static List<vaudio.Vector> ConvertConcavePolygonToVector3FList(string name, ConcavePolygonShape3D shape, out vaudio.Vector min, out vaudio.Vector max, VAWorld world)
     {
         Vector3[] faces = shape.GetFaces();
 
@@ -129,7 +129,7 @@ public static class Conversions
             min = new vaudio.Vector(0, 0, 0);
             max = new vaudio.Vector(0, 0, 0);
 
-            VAWorld.LogWarning($"ConcavePolygonShape3D {name} will not affect raytracing as it has no faces");
+            world.LogWarning($"ConcavePolygonShape3D {name} will not affect raytracing as it has no faces");
             return [];
         }
 
@@ -157,7 +157,7 @@ public static class Conversions
         return vertices;
     }
 
-    public static List<vaudio.Vector> ConvertConvexPolygonToVector3FList(string name, ConvexPolygonShape3D shape, out vaudio.Vector min, out vaudio.Vector max)
+    public static List<vaudio.Vector> ConvertConvexPolygonToVector3FList(string name, ConvexPolygonShape3D shape, out vaudio.Vector min, out vaudio.Vector max, VAWorld world)
     {
         // Use the debug mesh to triangulate the polygon
         var debugMesh = shape.GetDebugMesh();
@@ -167,14 +167,14 @@ public static class Conversions
             min = new vaudio.Vector(0, 0, 0);
             max = new vaudio.Vector(0, 0, 0);
 
-            VAWorld.LogWarning($"ConvexPolygonShape3D {name} will not affect raytracing as it cannot be triangulated");
+            world.LogWarning($"ConvexPolygonShape3D {name} will not affect raytracing as it cannot be triangulated");
             return [];
         }
 
-        return ConvertMeshToVector3FList(name, debugMesh, out min, out max);
+        return ConvertMeshToVector3FList(name, debugMesh, out min, out max, world);
     }
 
-    public static List<vaudio.Vector> ConvertHeightMapToVector3FList(string name, HeightMapShape3D shape, out vaudio.Vector min, out vaudio.Vector max)
+    public static List<vaudio.Vector> ConvertHeightMapToVector3FList(string name, HeightMapShape3D shape, out vaudio.Vector min, out vaudio.Vector max, VAWorld world)
     {
         int mapWidth = shape.MapWidth;
         int mapDepth = shape.MapDepth;
@@ -186,7 +186,7 @@ public static class Conversions
             min = new vaudio.Vector(0, 0, 0);
             max = new vaudio.Vector(0, 0, 0);
 
-            VAWorld.LogWarning($"HeightMapShape3D {name} will not affect raytracing as its dimensions are less than 2x2");
+            world.LogWarning($"HeightMapShape3D {name} will not affect raytracing as its dimensions are less than 2x2");
             return [];
         }
 

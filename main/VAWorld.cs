@@ -101,7 +101,7 @@ public partial class VAWorld : Node
     }
 
     // Log to both - in case we're launched from vs2026 or from the Godot Editor
-    public static Action<string> Log = (message) =>
+    public Action<string> Log = (message) =>
     {
         var prefixed = $"[vaudio-godot-openal] {message}";
 
@@ -109,7 +109,7 @@ public partial class VAWorld : Node
         GD.Print(prefixed);
     };
 
-    public static Action<string> LogWarning = (message) =>
+    public Action<string> LogWarning = (message) =>
     {
         var prefixed = $"[vaudio-godot-openal] {message}";
 
@@ -117,7 +117,7 @@ public partial class VAWorld : Node
         GD.PushWarning(prefixed);
     };
 
-    public static Action<string> LogError = (message) =>
+    public Action<string> LogError = (message) =>
     {
         var prefixed = $"[vaudio-godot-openal] {message}";
 

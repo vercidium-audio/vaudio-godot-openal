@@ -207,7 +207,7 @@ public partial class VAWorld : Node
             return;
         }
 
-        var triangles = Conversions.ConvertMeshToVector3FList(csgPolygon.Name, mesh, out var min, out var max);
+        var triangles = Conversions.ConvertMeshToVector3FList(csgPolygon.Name, mesh, out var min, out var max, this);
 
         if (triangles.Count == 0)
             return;
@@ -243,7 +243,7 @@ public partial class VAWorld : Node
             return;
         }
 
-        var triangles = Conversions.ConvertMeshToVector3FList(csgMesh.Name, mesh, out var min, out var max);
+        var triangles = Conversions.ConvertMeshToVector3FList(csgMesh.Name, mesh, out var min, out var max, this);
 
         if (triangles.Count == 0)
             return;
@@ -361,7 +361,7 @@ public partial class VAWorld : Node
         }
         else if (shape is ConvexPolygonShape3D convexPolygon)
         {
-            var triangles = Conversions.ConvertConvexPolygonToVector3FList(collisionShape.Name, convexPolygon, out var min, out var max);
+            var triangles = Conversions.ConvertConvexPolygonToVector3FList(collisionShape.Name, convexPolygon, out var min, out var max, this);
             var transform = ToVAudio(globalTransform);
 
             if (triangles.Count > 0)
@@ -372,7 +372,7 @@ public partial class VAWorld : Node
         }
         else if (shape is HeightMapShape3D heightMap)
         {
-            var triangles = Conversions.ConvertHeightMapToVector3FList(collisionShape.Name, heightMap, out var min, out var max);
+            var triangles = Conversions.ConvertHeightMapToVector3FList(collisionShape.Name, heightMap, out var min, out var max, this);
             var transform = ToVAudio(globalTransform);
 
             if (triangles.Count > 0)
@@ -383,7 +383,7 @@ public partial class VAWorld : Node
         }
         else if (shape is ConcavePolygonShape3D polygon)
         {
-            var triangles = Conversions.ConvertConcavePolygonToVector3FList(collisionShape.Name, polygon, out var min, out var max);
+            var triangles = Conversions.ConvertConcavePolygonToVector3FList(collisionShape.Name, polygon, out var min, out var max, this);
             var transform = ToVAudio(globalTransform);
 
             if (triangles.Count > 0)
@@ -496,7 +496,7 @@ public partial class VAWorld : Node
         }
 
         // Convert mesh to triangle list
-        var triangles = Conversions.ConvertMeshToVector3FList(meshInstance.Name, mesh, out var min, out var max);
+        var triangles = Conversions.ConvertMeshToVector3FList(meshInstance.Name, mesh, out var min, out var max, this);
 
         if (triangles.Count == 0)
             return;

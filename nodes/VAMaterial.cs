@@ -25,7 +25,7 @@ public partial class VAMaterial : Node
         // Prevent duplicates
         if (vercidiumAudio.customMaterials.TryGetValue(MaterialType, out VAMaterial value))
         {
-            VAWorld.LogError($"The VAMaterial node {Name} has the same material ID ({MaterialType}) as the VAMaterial node {value.Name}. Please change this to another ID");
+            vercidiumAudio.LogError($"The VAMaterial node {Name} has the same material ID ({MaterialType}) as the VAMaterial node {value.Name}. Please change this to another ID");
 
             return;
         }
@@ -58,7 +58,7 @@ public partial class VAMaterial : Node
         {
             if (!firstSet && !Engine.IsEditorHint())
             {
-                VAWorld.LogWarning($"Cannot change the type of VAMaterial nodes at runtime. Node: {Name}");
+                vercidiumAudio?.LogWarning($"Cannot change the type of VAMaterial nodes at runtime. Node: {Name}");
                 return;
             }
 
