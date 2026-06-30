@@ -2,7 +2,7 @@ using godot_openal;
 
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
     public bool Initialised => world != null;
 
@@ -129,7 +129,7 @@ public partial class VercidiumAudio : Node
         {
             if (!NoListenerErrorLogged)
             {
-                LogError($"Failed to update node {Name} because there is no main listener. Ensure a VercidiumAudioEmitter exists with `IsMainListener` set to true");
+                LogError($"Failed to update node {Name} because there is no main listener. Ensure a VAEmitter exists with `IsMainListener` set to true");
                 NoListenerErrorLogged = true;
             }
 

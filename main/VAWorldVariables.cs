@@ -1,12 +1,12 @@
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
     public const string PRIMITIVE_META_KEY = "vercidium_audio_primitive";
     public const string MATERIAL_META_KEY = "vercidium_audio_material";
 
     public vaudio.World world;
-    public VercidiumAudioEmitter listener;
+    public VAEmitter listener;
 
     public ALFilter ambientFilter;
     public ALReverbEffect listenerReverbEffect;

@@ -1,13 +1,13 @@
 @tool
 extends EditorPlugin
 
-const VercidiumAudio = preload("res://addons/vaudio-godot-openal/main/VercidiumAudio.cs")
-const VercidiumAudioEmitter = preload("res://addons/vaudio-godot-openal/emitter/VercidiumAudioEmitter.cs")
-const VercidiumAudioMaterial = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioMaterial.cs")
+const VAWorld = preload("res://addons/vaudio-godot-openal/main/VAWorld.cs")
+const VAEmitter = preload("res://addons/vaudio-godot-openal/emitter/VAEmitter.cs")
+const VAMaterial = preload("res://addons/vaudio-godot-openal/nodes/VAMaterial.cs")
 
-const VercidiumAudioSource = preload("res://addons/vaudio-godot-openal/source/VercidiumAudioSource.cs")
-const VercidiumAudioSourceRelative = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceRelative.cs")
-const VercidiumAudioSourceAmbient = preload("res://addons/vaudio-godot-openal/nodes/VercidiumAudioSourceAmbient.cs")
+const VASource = preload("res://addons/vaudio-godot-openal/source/VASource.cs")
+const VASourceRelative = preload("res://addons/vaudio-godot-openal/nodes/VASourceRelative.cs")
+const VASourceAmbient = preload("res://addons/vaudio-godot-openal/nodes/VASourceAmbient.cs")
 
 const CSPROJ_INSERT = """    <ItemGroup>
         <Reference Include="vaudio">
@@ -20,13 +20,13 @@ func _enter_tree():
 	var icon = preload("res://addons/vaudio-godot-openal/icons/vercidium.svg")
 	var iconAL = preload("res://addons/vaudio-godot-openal/icons/vercidium_al.svg")
 
-	add_custom_type("VercidiumAudio", "Node", VercidiumAudio, icon)
-	add_custom_type("VercidiumAudioEmitter", "Node3D", VercidiumAudioEmitter, icon)
-	add_custom_type("VercidiumAudioMaterial", "Node3D", VercidiumAudioMaterial, icon)
+	add_custom_type("VAWorld", "Node", VAWorld, icon)
+	add_custom_type("VAEmitter", "Node3D", VAEmitter, icon)
+	add_custom_type("VAMaterial", "Node3D", VAMaterial, icon)
 
-	add_custom_type("VercidiumAudioSource", "Node3D", VercidiumAudioSource, iconAL)
-	add_custom_type("VercidiumAudioSourceRelative", "Node", VercidiumAudioSourceRelative, iconAL)
-	add_custom_type("VercidiumAudioSourceAmbient", "Node", VercidiumAudioSourceAmbient, iconAL)
+	add_custom_type("VASource", "Node3D", VASource, iconAL)
+	add_custom_type("VASourceRelative", "Node", VASourceRelative, iconAL)
+	add_custom_type("VASourceAmbient", "Node", VASourceAmbient, iconAL)
 
 	_setup_project()
 
@@ -36,13 +36,13 @@ func _enter_tree():
 	print("[vaudio-godot-openal] Vercidium Audio (vaudio) plugin enabled")
 
 func _exit_tree():
-	remove_custom_type("VercidiumAudio")
-	remove_custom_type("VercidiumAudioEmitter")
-	remove_custom_type("VercidiumAudioMaterial")
+	remove_custom_type("VAWorld")
+	remove_custom_type("VAEmitter")
+	remove_custom_type("VAMaterial")
 
-	remove_custom_type("VercidiumAudioSource")
-	remove_custom_type("VercidiumAudioSourceRelative")
-	remove_custom_type("VercidiumAudioSourceAmbient")
+	remove_custom_type("VASource")
+	remove_custom_type("VASourceRelative")
+	remove_custom_type("VASourceAmbient")
 
 	if ProjectSettings.settings_changed.is_connected(_on_settings_changed):
 		ProjectSettings.settings_changed.disconnect(_on_settings_changed)

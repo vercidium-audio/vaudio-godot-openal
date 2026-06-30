@@ -1,6 +1,6 @@
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
     public Node3D SceneRoot;
 

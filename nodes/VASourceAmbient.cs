@@ -4,9 +4,9 @@ namespace vaudio_godot_openal;
 
 [Tool]
 [GlobalClass]
-public partial class VercidiumAudioSourceAmbient : ALSource3D
+public partial class VASourceAmbient : ALSource3D
 {
-    private VercidiumAudio vercidiumAudio;
+    private VAWorld vercidiumAudio;
     private bool played = false;
 
     public override void _EnterTree()
@@ -14,7 +14,7 @@ public partial class VercidiumAudioSourceAmbient : ALSource3D
         if (Engine.IsEditorHint())
             return;
 
-        vercidiumAudio = this.GetVercidiumAudioParent();
+        vercidiumAudio = this.GetVAWorldParent();
     }
 
     public override void _Ready()
@@ -43,7 +43,7 @@ public partial class VercidiumAudioSourceAmbient : ALSource3D
         if (Engine.IsEditorHint())
             return;
 
-        // Ensure VercidiumAudio is available
+        // Ensure VAWorld is available
         if (vercidiumAudio?.ambientFilter == null)
             return;
 

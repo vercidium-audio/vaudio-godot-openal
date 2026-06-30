@@ -1,8 +1,8 @@
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
-    public Dictionary<int, VercidiumAudioMaterial> customMaterials = [];
+    public Dictionary<int, VAMaterial> customMaterials = [];
 
     /// <summary>
     /// Extract a material type from a node. Returns MaterialType.Air if no materials are found

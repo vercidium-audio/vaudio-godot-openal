@@ -4,9 +4,9 @@ namespace vaudio_godot_openal;
 
 [Tool]
 [GlobalClass]
-public partial class VercidiumAudioEmitter : Node3D
+public partial class VAEmitter : Node3D
 {
-    VercidiumAudio vercidiumAudio;
+    VAWorld vercidiumAudio;
     public vaudio.Emitter emitter;
 
     public ALReverbEffect effect;
@@ -21,17 +21,17 @@ public partial class VercidiumAudioEmitter : Node3D
         if (Engine.IsEditorHint())
             return;
 
-        vercidiumAudio = this.GetVercidiumAudioParent();
+        vercidiumAudio = this.GetVAWorldParent();
 
         if (vercidiumAudio == null)
         {
-            VercidiumAudio.LogWarning($"Failed to initialise node {Name} because there is no VercidiumAudio node. Ensure a VercidiumAudio node exists higher up the tree");
+            VAWorld.LogWarning($"Failed to initialise node {Name} because there is no VAWorld node. Ensure a VAWorld node exists higher up the tree");
             return;
         }
 
         if (!vercidiumAudio.Initialised)
         {
-            VercidiumAudio.LogWarning($"Failed to initialise node {Name} because the VercidiumAudio node is not initialised yet. Ensure the VercidiumAudio node is higher up the tree");
+            VAWorld.LogWarning($"Failed to initialise node {Name} because the VAWorld node is not initialised yet. Ensure the VAWorld node is higher up the tree");
             return;
         }
 
@@ -44,9 +44,9 @@ public partial class VercidiumAudioEmitter : Node3D
         if (sceneRoot == null)
             return [];
 
-        var vercidiumAudioNode = sceneRoot.GetChildren().OfType<VercidiumAudio>().FirstOrDefault();
+        var vercidiumAudioNode = sceneRoot.GetChildren().OfType<VAWorld>().FirstOrDefault();
         if (vercidiumAudioNode == null)
-            return ["No VercidiumAudio node found. Ensure a VercidiumAudio node exists higher up the tree."];
+            return ["No VAWorld node found. Ensure a VAWorld node exists higher up the tree."];
 
         // Find the top-level ancestor of this node (direct child of scene root)
         var ancestor = this as Node;
@@ -54,7 +54,7 @@ public partial class VercidiumAudioEmitter : Node3D
             ancestor = ancestor.GetParent();
 
         if (ancestor.GetIndex() < vercidiumAudioNode.GetIndex())
-            return ["This node must be lower in the scene tree than the VercidiumAudio node."];
+            return ["This node must be lower in the scene tree than the VAWorld node."];
 
         return [];
     }
@@ -125,8 +125,8 @@ public partial class VercidiumAudioEmitter : Node3D
         }
     }
 
-    public bool HasRaytracedTarget(VercidiumAudioEmitter target) => emitter.HasRaytracedTarget(target.emitter);
-    public vaudio.LowPassFilter GetTargetFilter(VercidiumAudioEmitter target) => emitter.GetTargetFilter(target.emitter);
+    public bool HasRaytracedTarget(VAEmitter target) => emitter.HasRaytracedTarget(target.emitter);
+    public vaudio.LowPassFilter GetTargetFilter(VAEmitter target) => emitter.GetTargetFilter(target.emitter);
     public vaudio.LowPassFilter GetTargetFilter(vaudio.Emitter target) => emitter.GetTargetFilter(target);
 
     public override void _ExitTree()
@@ -149,7 +149,6 @@ public partial class VercidiumAudioEmitter : Node3D
     }
 
     // Shortcuts
-    public vaudio.RawReverb RawReverb => emitter.RawReverb;
     public vaudio.ProcessedReverb ProcessedReverb => emitter.ProcessedReverb;
     public vaudio.EAXReverb EAX => emitter.EAX;
     public vaudio.LowPassFilter AmbientFilter => emitter.AmbientFilter;

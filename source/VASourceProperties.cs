@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudioSource : ALSource3D
+public partial class VASource : ALSource3D
 {
     [ExportGroup("Reverb")]
     

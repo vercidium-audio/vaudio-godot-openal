@@ -3,16 +3,16 @@ using godot_openal;
 namespace vaudio_godot_openal;
 
 [GlobalClass]
-public partial class VercidiumAudioSourceRelative : ALSource3D
+public partial class VASourceRelative : ALSource3D
 {
-    private VercidiumAudio vercidiumAudio;
+    private VAWorld vercidiumAudio;
 
     public override void _EnterTree()
     {
         if (Engine.IsEditorHint())
             return;
 
-        vercidiumAudio = this.GetVercidiumAudioParent();
+        vercidiumAudio = this.GetVAWorldParent();
     }
 
     public override void _Ready()

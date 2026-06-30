@@ -1,6 +1,6 @@
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudioEmitter : Node3D
+public partial class VAEmitter : Node3D
 {
     [ExportGroup("Reverb")]
 

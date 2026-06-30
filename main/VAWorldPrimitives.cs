@@ -1,6 +1,6 @@
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
     void AddPrimitive(Node node, vaudio.MaterialType material, bool recursive)
     {
@@ -37,7 +37,7 @@ public partial class VercidiumAudio : Node
         // When a node is removed from the scene, remove it from the raytracing simulation too
         if (node.HasMeta(PRIMITIVE_META_KEY))
         {
-            var wrapper = node.GetMeta(PRIMITIVE_META_KEY).As<VercidiumAudioPrimitiveRef>();
+            var wrapper = node.GetMeta(PRIMITIVE_META_KEY).As<VAPrimitiveRef>();
 
             wrapper.Watcher?.QueueFree();
 
@@ -54,11 +54,11 @@ public partial class VercidiumAudio : Node
                 RemovePrimitive(child, true);
     }
 
-    static VercidiumAudioPrimitiveRef AttachWatcher(Node3D node, vaudio.Primitive prim, Action update)
+    static VAPrimitiveRef AttachWatcher(Node3D node, vaudio.Primitive prim, Action update)
     {
         var watcher = new TransformWatcher { OnTransformChanged = update };
         node.AddChild(watcher);
-        return new VercidiumAudioPrimitiveRef { Primitive = prim, Watcher = watcher };
+        return new VAPrimitiveRef { Primitive = prim, Watcher = watcher };
     }
 
     void CreateVAudioPrimitive(CsgBox3D csgBox, vaudio.MaterialType material)
@@ -506,7 +506,7 @@ public partial class VercidiumAudio : Node
         vaudio.MeshPrimitive prim = new(material, triangles, min, max, transform)
         {
             // TODO - make this a metadata / inspector flag in godot
-            supportsPermeation = true
+            Supports3DPermeation = true
         };
 
         world.AddPrimitive(prim);

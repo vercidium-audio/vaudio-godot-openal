@@ -111,7 +111,7 @@ public static class Conversions
             min = vaudio.Vector.Zero;
             max = vaudio.Vector.Zero;
 
-            VercidiumAudio.LogWarning($"Mesh {name} will not affect raytracing as it has no vertices");
+            VAWorld.LogWarning($"Mesh {name} will not affect raytracing as it has no vertices");
         }
 
         minOut = min;
@@ -129,7 +129,7 @@ public static class Conversions
             min = new vaudio.Vector(0, 0, 0);
             max = new vaudio.Vector(0, 0, 0);
 
-            VercidiumAudio.LogWarning($"ConcavePolygonShape3D {name} will not affect raytracing as it has no faces");
+            VAWorld.LogWarning($"ConcavePolygonShape3D {name} will not affect raytracing as it has no faces");
             return [];
         }
 
@@ -167,7 +167,7 @@ public static class Conversions
             min = new vaudio.Vector(0, 0, 0);
             max = new vaudio.Vector(0, 0, 0);
 
-            VercidiumAudio.LogWarning($"ConvexPolygonShape3D {name} will not affect raytracing as it cannot be triangulated");
+            VAWorld.LogWarning($"ConvexPolygonShape3D {name} will not affect raytracing as it cannot be triangulated");
             return [];
         }
 
@@ -186,7 +186,7 @@ public static class Conversions
             min = new vaudio.Vector(0, 0, 0);
             max = new vaudio.Vector(0, 0, 0);
 
-            VercidiumAudio.LogWarning($"HeightMapShape3D {name} will not affect raytracing as its dimensions are less than 2x2");
+            VAWorld.LogWarning($"HeightMapShape3D {name} will not affect raytracing as its dimensions are less than 2x2");
             return [];
         }
 

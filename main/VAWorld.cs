@@ -1,12 +1,12 @@
 namespace vaudio_godot_openal;
 
 [Tool]
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
     // Temp
     public List<vaudio.Emitter> emitters = [];
 
-    public vaudio.Emitter CreateEmitter(VercidiumAudioEmitter node, Action OnRaytracingComplete, Action<vaudio.Emitter> OnRaytracedByAnotherEmitter)
+    public vaudio.Emitter CreateEmitter(VAEmitter node, Action OnRaytracingComplete, Action<vaudio.Emitter> OnRaytracedByAnotherEmitter)
     {
         var emitter = new vaudio.Emitter
         {
@@ -79,7 +79,7 @@ public partial class VercidiumAudio : Node
         {
             if (listener == null)
             {
-                LogWarning($"Emitters cannot be added before the main listener emitter is created. Ensure a VercidiumAudioEmitter node exists as a child node of VercidiumAudio, with IsMainListener set to true");
+                LogWarning($"Emitters cannot be added before the main listener emitter is created. Ensure a VAEmitter node exists as a child node of VAWorld, with IsMainListener set to true");
             }
             else
             {

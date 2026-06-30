@@ -5,10 +5,10 @@ namespace vaudio_godot_openal;
 
 [Tool]
 [GlobalClass]
-public partial class VercidiumAudioSource : ALSource3D
+public partial class VASource : ALSource3D
 {
-    private VercidiumAudio vercidiumAudio;
-    VercidiumAudioEmitter emitter;
+    private VAWorld vercidiumAudio;
+    VAEmitter emitter;
 
     public bool Raytraced => emitter != null && emitter.Raytraced;
 
@@ -32,7 +32,7 @@ public partial class VercidiumAudioSource : ALSource3D
 
     public override void _EnterTree()
     {
-        vercidiumAudio = this.GetVercidiumAudioParent();
+        vercidiumAudio = this.GetVAWorldParent();
 
         if (!Engine.IsEditorHint())
         {
@@ -40,7 +40,7 @@ public partial class VercidiumAudioSource : ALSource3D
             RegisterDeviceRecreatedCallback(OnDeviceRecreated);
         }
 
-        // Must create the emitter after the parent VercidiumAudio node is initialised
+        // Must create the emitter after the parent VAWorld node is initialised
         CreateEmitter();
     }
 
@@ -52,9 +52,9 @@ public partial class VercidiumAudioSource : ALSource3D
         if (sceneRoot == null)
             return baseWarnings;
 
-        var vercidiumAudioNode = sceneRoot.GetChildren().OfType<VercidiumAudio>().FirstOrDefault();
+        var vercidiumAudioNode = sceneRoot.GetChildren().OfType<VAWorld>().FirstOrDefault();
         if (vercidiumAudioNode == null)
-            return [.. baseWarnings, "No VercidiumAudio node found. Ensure a VercidiumAudio node exists higher up the tree."];
+            return [.. baseWarnings, "No VAWorld node found. Ensure a VAWorld node exists higher up the tree."];
 
         // Find the top-level ancestor of this node (direct child of scene root)
         var ancestor = this as Node;
@@ -62,14 +62,14 @@ public partial class VercidiumAudioSource : ALSource3D
             ancestor = ancestor.GetParent();
 
         if (ancestor.GetIndex() < vercidiumAudioNode.GetIndex())
-            return [.. baseWarnings, "This node must be lower in the scene tree than the VercidiumAudio node."];
+            return [.. baseWarnings, "This node must be lower in the scene tree than the VAWorld node."];
 
         return baseWarnings;
     }
 
     public void CreateEmitter()
     {
-        emitter = new VercidiumAudioEmitter()
+        emitter = new VAEmitter()
         {
             Name = $"{Name}-Emitter",
             OnRaytracedByAnotherEmitterCallback = OnRaytracedByAnotherEmitter,

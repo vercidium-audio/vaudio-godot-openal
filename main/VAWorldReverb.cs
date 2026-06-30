@@ -1,6 +1,6 @@
 namespace vaudio_godot_openal;
 
-public partial class VercidiumAudio : Node
+public partial class VAWorld : Node
 {
     public ALReverbEffect GetReverbEffect(vaudio.Emitter emitter)
     {
@@ -18,7 +18,7 @@ public partial class VercidiumAudio : Node
         return listenerReverbEffect;
     }
 
-    public ALReverbEffect GetReverbEffect(VercidiumAudioEmitter emitter)
+    public ALReverbEffect GetReverbEffect(VAEmitter emitter)
     {
         if (emitter.AffectsGroupedEAX && emitter.GroupedEAXIndex >= 0)
         {
@@ -94,7 +94,7 @@ public partial class VercidiumAudio : Node
 
         if (isGroupedEAX && eax.RelativeDirections != null && eax.RelativeDirections.TryGetValue(listener.emitter, out var pan))
         {
-            // Convert to openal
+            // Convert to a listener-relative vector for OpenAL
             pan = vaudio.World.CalculateListenerRelativePan(pan, listener.Pitch, listener.Yaw);
 
             effect.effectSlotGain = eax.RelativeGains[listener.emitter];

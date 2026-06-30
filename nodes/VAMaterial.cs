@@ -2,17 +2,17 @@ namespace vaudio_godot_openal;
 
 /// <summary>
 /// Custom acoustic material resource for the Vercidium Audio plugin.
-/// Must be defined as a child Node of a VercidiumAudio node.
+/// Must be defined as a child Node of a VAWorld node.
 /// Can be created in the Godot editor and assigned to collision shapes.
 /// </summary>
 [Tool]
 [GlobalClass]
-public partial class VercidiumAudioMaterial : Node
+public partial class VAMaterial : Node
 {
     private int _materialType = 1000;
     private string _materialName = "CustomMaterial";
 
-    VercidiumAudio vercidiumAudio;
+    VAWorld vercidiumAudio;
     vaudio.MaterialProperties vaudioMaterial;
 
     public override void _EnterTree()
@@ -20,12 +20,12 @@ public partial class VercidiumAudioMaterial : Node
         if (Engine.IsEditorHint())
             return;
 
-        vercidiumAudio = this.GetVercidiumAudioParent();
+        vercidiumAudio = this.GetVAWorldParent();
 
         // Prevent duplicates
-        if (vercidiumAudio.customMaterials.TryGetValue(MaterialType, out VercidiumAudioMaterial value))
+        if (vercidiumAudio.customMaterials.TryGetValue(MaterialType, out VAMaterial value))
         {
-            VercidiumAudio.LogError($"The VercidiumAudioMaterial node {Name} has the same material ID ({MaterialType}) as the VercidiumAudioMaterial node {value.Name}. Please change this to another ID");
+            VAWorld.LogError($"The VAMaterial node {Name} has the same material ID ({MaterialType}) as the VAMaterial node {value.Name}. Please change this to another ID");
 
             return;
         }
@@ -58,7 +58,7 @@ public partial class VercidiumAudioMaterial : Node
         {
             if (!firstSet && !Engine.IsEditorHint())
             {
-                VercidiumAudio.LogWarning($"Cannot change the type of VercidiumAudioMaterial nodes at runtime. Node: {Name}");
+                VAWorld.LogWarning($"Cannot change the type of VAMaterial nodes at runtime. Node: {Name}");
                 return;
             }
 

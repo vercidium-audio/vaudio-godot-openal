@@ -1,6 +1,6 @@
 namespace vaudio_godot_openal;
 
-partial class VercidiumAudioPrimitiveRef : RefCounted
+partial class VAPrimitiveRef : RefCounted
 {
     public vaudio.Primitive Primitive { get; set; }
     public TransformWatcher Watcher { get; set; }
