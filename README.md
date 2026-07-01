@@ -1,6 +1,15 @@
 # Vercidium Audio
 
-Raytraced audio system with realistic occlusion and reverb for Godot 4.
+Raytraced audio plugin with realistic muffling, reverb, ambience and visualisation for Godot 4.
+
+> [!WARNING]
+> This plugin is experimental and requires much testing and feedback
+
+This repository requires the Vercidium Audio SDK v1.2.0 and OpenAL Soft to run:
+- Download the Vercidium Audio SDK from [vercidium.com](https://vercidium.com)
+- Download the OpenAL Soft DLL from [github.com/kcat/openal-soft](https://github.com/kcat/openal-soft/releases/tag/1.25.1)
+
+> Please note that the Vercidium Audio SDK is not free for commercial use. See [vercidium.com/eula](https://vercidium.com/eula)
 
 ## Features
 
@@ -12,13 +21,13 @@ Raytraced audio system with realistic occlusion and reverb for Godot 4.
 
 ## References
 - [godot-openal repo](https://github.com/vercidium-audio/godot-openal)
-- [Vercidum Audio documentation](https://docs.vercidium.com/raytraced-audio/v110/Getting+Started)
+- [Vercidum Audio documentation](https://vercidium.com/docs)
 
 ## Requirements
 
 - This plugin depends on the [godot-openal](https://github.com/vercidium-audio/godot-openal) plugin. If you wish to use other audio middleware instead, use the raw [vaudio-godot](https://github.com/vercidium-audio/vaudio-godot) plugin
 - Godot 4.x with C# support
-- [Vercidium Audio SDK](https://vercidium.com/audio)
+- [Vercidium Audio SDK](https://vercidium.com)
 
 ## Installation
 
@@ -39,4 +48,4 @@ Then close the window, click the same small dropdown arrow, and select `Godot`. 
 
 ## Licencing
 
-The Vercidium Audio SDK is free for non-commercial products only. To purchase a licence for commercial use, head over to the [Vercidium Audio website](https://vercidium.com/audio).
+The Vercidium Audio SDK is free for non-commercial products only. To purchase a licence for commercial use, head over to the [Vercidium Audio website](https://vercidium.com).
