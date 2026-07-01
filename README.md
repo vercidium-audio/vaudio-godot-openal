@@ -31,7 +31,7 @@ This repository requires the Vercidium Audio SDK v1.2.0 and OpenAL Soft to run:
 
 ## Installation
 
-Read in [project setup](./PROJECT_SETUP.md).
+Setup instructions are [available here](https://vercidium.com/docs/godot/getting-started).
 
 ## Visual Studio
 
