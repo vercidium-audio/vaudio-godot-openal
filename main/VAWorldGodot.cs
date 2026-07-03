@@ -14,33 +14,33 @@ public partial class VAWorld : Node
         // Cache the scene root since we access it often
         SceneRoot = GetTree().CurrentScene as Node3D;
 
-        world = new()
-        {
-            LogCallback = Log,
-            Position = new(Position.X, Position.Y, Position.Z),
-            Size = new(Size.X, Size.Y, Size.Z),
-            Epsilon = Epsilon,
-            WorldIsIndoors = WorldIsIndoors,
+        world = new();
+        
+        world.LogCallback = Log;
+        world.Position = new(Position.X, Position.Y, Position.Z);
+        world.Size = new(Size.X, Size.Y, Size.Z);
+        world.Epsilon = Epsilon;
+        world.WorldIsIndoors = WorldIsIndoors;
 
-            // Reverb
-            MaximumGroupedEAXCount = MaximumGroupedEAXCount,
-            OnReverbUpdated = OnReverbUpdated,
+        // Reverb
+        world.MaximumGroupedEAXCount = MaximumGroupedEAXCount;
+        world.OnReverbUpdated = OnReverbUpdated;
 
-            // Air absorption
-            MetersPerUnit = MetersPerUnit,
-            InverseSpeedOfSound = 1.0f /    SpeedOfSound,
-            ReferenceFrequencyLF = ReferenceFrequencyLF,
-            ReferenceFrequencyHF = ReferenceFrequencyHF,
+        // Air absorption
+        world.MetersPerUnit = MetersPerUnit;
+        world.InverseSpeedOfSound = 1.0f / SpeedOfSound;
+        world.ReferenceFrequencyLF = ReferenceFrequencyLF;
+        world.ReferenceFrequencyHF = ReferenceFrequencyHF;
 
-            // Emitters 
-            EmittersOutsideTheWorldAreMuffled = EmittersOutsideTheWorldAreMuffled,
+        // Emitters 
+        world.EmittersOutsideTheWorldAreMuffled = EmittersOutsideTheWorldAreMuffled;
 
-            // Threading
-            MaximumConcurrencyLevel = MaximumConcurrencyLevel,
-            WorkItemCount = WorkItemCount,
+        // Threading
+        world.MaximumConcurrencyLevel = MaximumConcurrencyLevel;
+        world.WorkItemCount = WorkItemCount;
 
-            RenderingEnabled = RenderingEnabled,
-        };
+        world.RenderingEnabled = RenderingEnabled;
+        
 
         world.AirAbsorption.Humidity = Humidity;
         world.AirAbsorption.Temperature = Temperature;
