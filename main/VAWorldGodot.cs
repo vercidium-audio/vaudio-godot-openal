@@ -98,8 +98,9 @@ public partial class VAWorld : Node
         if (Engine.IsEditorHint())
             return;
 
-        ALManager.instance.UnregisterDeviceDestroyedCallback(OnDeviceDestroyed);
-        ALManager.instance.UnregisterDeviceRecreatedCallback(OnDeviceRecreated);
+        // instance may be null if ALManager was never initialised
+        ALManager.instance?.UnregisterDeviceDestroyedCallback(OnDeviceDestroyed);
+        ALManager.instance?.UnregisterDeviceRecreatedCallback(OnDeviceRecreated);
 
         GetTree().NodeAdded -= OnNodeAdded;
         GetTree().NodeRemoved -= OnNodeRemoved;
@@ -135,8 +136,6 @@ public partial class VAWorld : Node
 
             return;
         }
-
-        listener.emitter.PermeationColor = new vaudio.Color(255, 255, 0);
 
         // Sync the AL listener to our main listener
         if (GodotOpenALEnabled)

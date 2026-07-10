@@ -61,6 +61,14 @@ public partial class VAWorld : Node
         return new VAPrimitiveRef { Primitive = prim, Watcher = watcher };
     }
 
+    // PrismPrimitive only supports rotation/translation, not scale, so any scale present in the
+    //  transform's basis must be pre-applied to the size and stripped from the returned transform
+    static Transform3D RemoveScale(Transform3D transform, out Vector3 scale)
+    {
+        scale = transform.Basis.Scale;
+        return new Transform3D(transform.Basis.Orthonormalized(), transform.Origin);
+    }
+
     void CreateVAudioPrimitive(CsgBox3D csgBox, vaudio.MaterialType material)
     {
         Debug.Assert(material != vaudio.MaterialType.Air);
@@ -72,10 +80,12 @@ public partial class VAWorld : Node
             return;
         }
 
+        var transform = RemoveScale(csgBox.GlobalTransform, out var scale);
+
         vaudio.PrismPrimitive prim = new()
         {
-            size = ToVAudio(csgBox.Size),
-            transform = ToVAudio(csgBox.GlobalTransform),
+            size = ToVAudio(csgBox.Size * scale),
+            transform = ToVAudio(transform),
             material = material
         };
 
@@ -83,8 +93,10 @@ public partial class VAWorld : Node
 
         csgBox.SetMeta(PRIMITIVE_META_KEY, AttachWatcher(csgBox, prim, () =>
         {
-            prim.size = ToVAudio(csgBox.Size);
-            prim.transform = ToVAudio(csgBox.GlobalTransform);
+            var updatedTransform = RemoveScale(csgBox.GlobalTransform, out var updatedScale);
+
+            prim.size = ToVAudio(csgBox.Size * updatedScale);
+            prim.transform = ToVAudio(updatedTransform);
         }));
     }
 
@@ -281,10 +293,12 @@ public partial class VAWorld : Node
 
         if (shape is BoxShape3D box)
         {
+            var boxTransform = RemoveScale(globalTransform, out var boxScale);
+
             world.AddPrimitive(prim = new vaudio.PrismPrimitive()
             {
-                size = ToVAudio(box.Size),
-                transform = ToVAudio(globalTransform),
+                size = ToVAudio(box.Size * boxScale),
+                transform = ToVAudio(boxTransform),
                 material = material
             });
         }
@@ -427,9 +441,10 @@ public partial class VAWorld : Node
         else if (primitive is vaudio.PrismPrimitive prism)
         {
             var box = collisionShape.Shape as BoxShape3D;
+            var boxTransform = RemoveScale(globalTransform, out var boxScale);
 
-            prism.size = ToVAudio(box.Size);
-            prism.transform = ToVAudio(globalTransform);
+            prism.size = ToVAudio(box.Size * boxScale);
+            prism.transform = ToVAudio(boxTransform);
         }
         else if (primitive is vaudio.CapsulePrimitive capsulePrim)
         {

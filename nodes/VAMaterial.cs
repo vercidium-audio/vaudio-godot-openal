@@ -86,8 +86,8 @@ public partial class VAMaterial : Node
     float _AbsorptionLF = 0.02f;
     float _AbsorptionHF = 0.1f;
     float _Scattering = 0.1f;
-    float _TransmissionLF = 50;
-    float _TransmissionHF = 100f;
+    float _TransmissionLF = 10;
+    float _TransmissionHF = 5f;
     float _PlaneTransmissionLF = 0.1f;
     float _PlaneTransmissionHF = 0.25f;
     Color _DebugColor = new(1, 0, 1);
@@ -155,7 +155,7 @@ public partial class VAMaterial : Node
     /// <summary>
     /// Low-frequency transmission in dB/m (0.0 or greater)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0001f,100.0,1,or_greater")]
+    [Export(PropertyHint.Range, "0.0001f,10.0,0.001f,or_greater")]
     public float TransmissionLF
     {
         get => _TransmissionLF;
@@ -175,7 +175,7 @@ public partial class VAMaterial : Node
     /// <summary>
     /// High-frequency transmission in dB/m (0.0 or greater)
     /// </summary>
-    [Export(PropertyHint.Range, "0.0001f,100.0,1,or_greater")]
+    [Export(PropertyHint.Range, "0.0001f,10.0,0.001f,or_greater")]
     public float TransmissionHF
     {
         get => _TransmissionHF;
