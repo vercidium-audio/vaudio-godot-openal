@@ -1,3 +1,5 @@
+using System.Linq;
+using Godot.Collections;
 namespace vaudio_godot_openal;
 
 /// <summary>
@@ -15,6 +17,34 @@ public partial class VAMaterial : Node
     VAWorld vercidiumAudio;
     vaudio.MaterialProperties vaudioMaterial;
 
+    System.Collections.Generic.Dictionary<string, vaudio.MaterialType> DefaultMaterialNames = new()
+    {
+        { "brick", vaudio.MaterialType.Brick },
+        { "cloth", vaudio.MaterialType.Cloth },
+        { "concrete", vaudio.MaterialType.Concrete },
+        { "concretepolished", vaudio.MaterialType.ConcretePolished },
+        { "dirt", vaudio.MaterialType.Dirt },
+        { "glass", vaudio.MaterialType.Glass },
+        { "grass", vaudio.MaterialType.Grass },
+        { "gravel", vaudio.MaterialType.Gravel },
+        { "gyprock", vaudio.MaterialType.Gyprock },
+        { "ice", vaudio.MaterialType.Ice },
+        { "leaf", vaudio.MaterialType.Leaf },
+        { "marble", vaudio.MaterialType.Marble },
+        { "metal", vaudio.MaterialType.Metal },
+        { "mud", vaudio.MaterialType.Mud },
+        { "rock", vaudio.MaterialType.Rock },
+        { "sand", vaudio.MaterialType.Sand },
+        { "snow", vaudio.MaterialType.Snow },
+        { "tile", vaudio.MaterialType.Tile },
+        { "tree", vaudio.MaterialType.Tree },
+        { "water", vaudio.MaterialType.Water },
+        { "woodindoor", vaudio.MaterialType.WoodIndoor },
+        { "woodoutdoor", vaudio.MaterialType.WoodOutdoor },
+    };
+
+    string DefaultMaterialNameHint => string.Join(",", DefaultMaterialNames.Keys);
+
     public override void _EnterTree()
     {
         if (Engine.IsEditorHint())
@@ -22,11 +52,26 @@ public partial class VAMaterial : Node
 
         vercidiumAudio = this.GetVAWorldParent();
 
+        if (IsDefaultMaterial)
+        {
+            var mat = vercidiumAudio.world.GetMaterial(defaultMaterialType);
+
+            mat.AbsorptionLF = AbsorptionLF;
+            mat.AbsorptionHF = AbsorptionHF;
+            mat.Scattering = Scattering;
+            mat.TransmissionLF = TransmissionLF;
+            mat.TransmissionHF = TransmissionHF;
+            mat.PlaneTransmissionLF = PlaneTransmissionLF;
+            mat.PlaneTransmissionHF = PlaneTransmissionHF;
+
+            vercidiumAudio.world.SetMaterialColor(defaultMaterialType, GetDebugColor());
+            return;
+        }
+
         // Prevent duplicates
         if (vercidiumAudio.customMaterials.TryGetValue(MaterialType, out VAMaterial value))
         {
             vercidiumAudio.LogError($"The VAMaterial node {Name} has the same material ID ({MaterialType}) as the VAMaterial node {value.Name}. Please change this to another ID");
-
             return;
         }
 
@@ -45,7 +90,40 @@ public partial class VAMaterial : Node
         vercidiumAudio.customMaterials[MaterialType] = this;
     }
 
-    bool firstSet = true;
+
+    vaudio.MaterialType defaultMaterialType = vaudio.MaterialType.Air;
+    bool _isDefaultMaterial = false;
+
+    [Export(PropertyHint.None, "")]
+    public bool IsDefaultMaterial
+    {
+        get => _isDefaultMaterial;
+        set
+        {
+            if (value == _isDefaultMaterial)
+                return;
+
+            _isDefaultMaterial = value;
+
+            if (value)
+            {
+                // Switching to a default material: pick the first entry and reuse its name
+                var firstEntry = DefaultMaterialNames.First();
+                defaultMaterialType = firstEntry.Value;
+                _materialName = firstEntry.Key;
+            }
+            else
+            {
+                defaultMaterialType = vaudio.MaterialType.Air;
+            }
+
+            UpdateConfigurationWarnings();
+            NotifyPropertyListChanged();
+        }
+    }
+
+
+    bool firstTypeSet = true;
 
     /// <summary>
     /// Unique material ID. Must be >= 1000 to avoid conflicts with built-in materials
@@ -56,7 +134,7 @@ public partial class VAMaterial : Node
         get => _materialType;
         set
         {
-            if (!firstSet && !Engine.IsEditorHint())
+            if (!firstTypeSet && !Engine.IsEditorHint())
             {
                 vercidiumAudio?.LogWarning($"Cannot change the type of VAMaterial nodes at runtime. Node: {Name}");
                 return;
@@ -65,9 +143,11 @@ public partial class VAMaterial : Node
             _materialType = value;
             UpdateConfigurationWarnings();
 
-            firstSet = false;
+            firstTypeSet = false;
         }
     }
+
+    bool firstNameSet = true;
 
     /// <summary>
     /// Material name for debugging and identification
@@ -78,8 +158,21 @@ public partial class VAMaterial : Node
         get => _materialName;
         set
         {
+            if (!firstNameSet && !Engine.IsEditorHint())
+            {
+                vercidiumAudio?.LogWarning($"Cannot change the name of VAMaterial nodes at runtime. Node: {Name}");
+                return;
+            }
+
+            // Update field
             _materialName = value;
+
+            if (IsDefaultMaterial)
+                DefaultMaterialNames.TryGetValue(value, out defaultMaterialType);
+
             UpdateConfigurationWarnings();
+
+            firstNameSet = false;
         }
     }
 
@@ -270,5 +363,35 @@ public partial class VAMaterial : Node
         }
 
         return [.. warnings];
+    }
+
+    public override void _ValidateProperty(Dictionary property)
+    {
+        string name = property["name"].AsStringName();
+
+        if (name == "MaterialType")
+        {
+            var usage = property["usage"].As<PropertyUsageFlags>();
+
+            if (IsDefaultMaterial)
+                usage &= ~PropertyUsageFlags.Editor;
+            else
+                usage |= PropertyUsageFlags.Editor;
+
+            property["usage"] = (int)(usage);
+        }
+        else if (name == "MaterialName")
+        {
+            if (IsDefaultMaterial)
+            {
+                property["hint"] = (int)PropertyHint.Enum;
+                property["hint_string"] = DefaultMaterialNameHint;
+            }
+            else
+            {
+                property["hint"] = (int)PropertyHint.None;
+                property["hint_string"] = "";
+            }
+        }
     }
 }

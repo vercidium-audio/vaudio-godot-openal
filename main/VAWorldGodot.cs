@@ -51,7 +51,7 @@ public partial class VAWorld : Node
 
         if (!GodotOpenALEnabled)
         {
-            LogWarning("The godot-openal addon is not found. For best audio quality, ensure godot-openal is enabled and the ALManager autoload is enabled in Project Settings > Globals");
+            LogError("The godot-openal addon is not enabled. Ensure godot-openal is enabled (try toggling it off and on), and ensure the ALManager autoload is enabled in Project Settings > Globals");
         }
 
         // Register for device destroyed/recreated callbacks to clean up and recreate reverb effects
