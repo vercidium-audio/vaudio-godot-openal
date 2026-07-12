@@ -8,10 +8,16 @@ public partial class VAWorld : Node
 
     public vaudio.Emitter CreateEmitter(VAEmitter node, Action OnRaytracingComplete, Action<vaudio.Emitter> OnRaytracedByAnotherEmitter)
     {
+        // RaytraceOnce emitters cast their rays once and are done — freeze their position at that
+        // moment (e.g. a dodgeball impact SFX) instead of tracking the node forever afterward.
+        var position = node.RaytraceOnce
+            ? (vaudio.IPosition)ToVAudio(node.GlobalPosition)
+            : new vaudio.FuncPosition(() => ToVAudio(node.GlobalPosition));
+
         var emitter = new vaudio.Emitter
         {
             Name = node.Name,
-            Position = new vaudio.FuncPosition(() => ToVAudio(node.GlobalPosition)),
+            Position = position,
             OnRaytracingComplete = OnRaytracingComplete,
             OnRaytracedByAnotherEmitter = OnRaytracedByAnotherEmitter,
 
@@ -96,8 +102,16 @@ public partial class VAWorld : Node
     {
         Debug.Assert(emitter != null);
 
-        emitters.Add(emitter);
-        listener.RemoveTarget(emitter);
+        // Don't untarget/forget the emitter yet: if it's going into a pending-removal reverb tail,
+        // it must keep being raytraced as a target of the listener until it's actually gone.
+        var existingCallback = emitter.OnEmitterRemoved;
+        emitter.OnEmitterRemoved = () =>
+        {
+            emitters.Remove(emitter);
+            listener.RemoveTarget(emitter);
+            existingCallback?.Invoke();
+        };
+
         world.RemoveEmitter(emitter);
     }
 

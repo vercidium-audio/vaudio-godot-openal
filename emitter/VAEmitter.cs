@@ -65,6 +65,7 @@ public partial class VAEmitter : Node3D
             throw new InvalidOperationException("Emitter already created");
 
         emitter = vercidiumAudio.CreateEmitter(this, OnRaytracingComplete, OnRaytracedByAnotherEmitter);
+        emitter.OnEmitterRemoved = OnEmitterRemoved;
     }
 
     public void RemoveEmitter()
@@ -72,8 +73,16 @@ public partial class VAEmitter : Node3D
         if (emitter == null)
             throw new InvalidOperationException("Emitter already removed");
 
+        // Don't null out `emitter` here: if AffectsEAXAfterRemoval is set, the underlying vaudio.Emitter
+        // stays alive (pendingRemoval) for its reverb tail and keeps polling Position — this node (and
+        // anything it's attached to, e.g. VASource) must stay in the tree until OnEmitterRemoved fires.
         vercidiumAudio.RemoveEmitter(emitter);
+    }
+
+    void OnEmitterRemoved()
+    {
         emitter = null;
+        OnEmitterRemovedCallback?.Invoke();
     }
 
     void OnRaytracingComplete()
@@ -156,6 +165,7 @@ public partial class VAEmitter : Node3D
 
     public Action OnRaytracingCompleteCallback;
     public Action<vaudio.Emitter> OnRaytracedByAnotherEmitterCallback;
+    public Action OnEmitterRemovedCallback;
 
     // Top-level properties
     bool _IsMainListener;

@@ -73,6 +73,8 @@ public partial class VASource : ALSource3D
         {
             Name = $"{Name}-Emitter",
             OnRaytracedByAnotherEmitterCallback = OnRaytracedByAnotherEmitter,
+            OnEmitterRemovedCallback = OnEmitterRemoved,
+            RaytraceOnce = RaytraceOnce,
 
             // Reverb
             ReverbRayCount = ReverbRayCount,
@@ -139,15 +141,14 @@ public partial class VASource : ALSource3D
 
         if (PlayWhenRaytracingCompletes)
             Play();
+    }
 
-        // Remove our emitter after we've been raytraced (this is a short sound that doesn't need continuous raytracing)
-        if (RaytraceOnce)
-        {
-            Debug.Assert(emitter != null);
+    void OnEmitterRemoved()
+    {
+        Debug.Assert(emitter != null);
 
-            RemoveChild(emitter);
-            emitter = null;
-        }
+        RemoveChild(emitter);
+        emitter = null;
     }
 
     bool played = false;
