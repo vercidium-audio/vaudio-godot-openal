@@ -58,6 +58,16 @@ public partial class VAWorld : Node
             if (groupedReverbEffects.Count <= i)
                 groupedReverbEffects.Add(new());
 
+            if (i > 0)
+            {
+                if (world.GroupedEAX[i].DecayTime < 1)
+                    world.GroupedEAX[i].DecayTime = 1;
+
+                world.GroupedEAX[i].Gain = 1;
+                world.GroupedEAX[i].GainLF = 1;
+                world.GroupedEAX[i].GainHF = 1;
+            }
+
             CopyReverb(world.GroupedEAX[i], groupedReverbEffects[i], true);
 
             groupedReverbEffects[i].Update();

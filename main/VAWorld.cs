@@ -22,6 +22,7 @@ public partial class VAWorld : Node
             MaxEchogramTime = node.MaxEchogramTime,
             EchogramGranularity = node.EchogramGranularity,
             AffectsGroupedEAX = node.AffectsGroupedEAX,
+            AffectsEAXAfterRemoval = node.AffectsEAXAfterRemoval,
             HasRelativeReverb = node.HasRelativeReverb,
             RelativeReverbInnerThreshold = node.RelativeReverbInnerThreshold,
             RelativeReverbOuterThreshold = node.RelativeReverbOuterThreshold,

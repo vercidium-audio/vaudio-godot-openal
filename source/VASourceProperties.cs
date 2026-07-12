@@ -110,6 +110,24 @@ public partial class VASource : ALSource3D
         }
     }
 
+    bool _AffectsEAXAfterRemoval = true;
+    [Export]
+    /// <summary>
+    /// Controls whether this Emitter's EAX continues to influence grouped EAX for a short time after it is removed from the
+    /// world, fading out over its reverb tail instead of disappearing instantly. Useful for short sounds with long reverb tails
+    /// </summary>
+    public bool AffectsEAXAfterRemoval
+    {
+        get => _AffectsEAXAfterRemoval;
+        set
+        {
+            _AffectsEAXAfterRemoval = value;
+
+            if (emitter != null)
+                emitter.AffectsEAXAfterRemoval = value;
+        }
+    }
+
 
     [ExportGroup("Muffling")]
 

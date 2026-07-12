@@ -104,6 +104,24 @@ public partial class VAEmitter : Node3D
         }
     }
 
+    bool _AffectsEAXAfterRemoval = true;
+    [Export]
+    /// <summary>
+    /// Controls whether this Emitter's EAX continues to influence grouped EAX for a short time after it is removed from the
+    /// world, fading out over its reverb tail instead of disappearing instantly. Useful for short sounds with long reverb tails
+    /// </summary>
+    public bool AffectsEAXAfterRemoval
+    {
+        get => _AffectsEAXAfterRemoval;
+        set
+        {
+            _AffectsEAXAfterRemoval = value;
+
+            if (emitter != null)
+                emitter.AffectsEAXAfterRemoval = value;
+        }
+    }
+
     bool _HasRelativeReverb = true;
     [Export]
     /// <summary>Whether this emitter is used as a reference point for calculating relative reverb gain and direction</summary>
