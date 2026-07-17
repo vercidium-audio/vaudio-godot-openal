@@ -59,9 +59,27 @@ public partial class VASource : ALSource3D
         }
     }
 
+    float _MaxVolume = 1.0f;
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    /// <summary>
+    /// The loudest linear volume (0–1) this emitter's dry source will ever be played at by the consuming application. Used to estimate how long the emitter's reverb tail stays audible in <see cref="EAXUtils.GetEffectiveTailSeconds"/> - a quieter source reaches an inaudible reverb tail sooner. Defaults to 1 (full volume)
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, less than 0 or greater than 1</exception>
+    public float MaxVolume
+    {
+        get => _MaxVolume;
+        set
+        {
+            _MaxVolume = value;
+
+            if (emitter != null)
+                emitter.MaxVolume = _MaxVolume;
+        }
+    }
+
     int _MaxEchogramTime = 5000;
     [Export]
-    /// <summary>How long (in milliseconds) the echogram records data for. Returning reverb rays after this period will be ignored. Defaults to 5000ms</summary>
+    /// <summary>How long (in milliseconds) the echogram records data for. Returning reverb rays after this period will be ignored</summary>
     public int MaxEchogramTime
     {
         get => _MaxEchogramTime;
@@ -76,9 +94,9 @@ public partial class VASource : ALSource3D
         }
     }
 
-    int _EchogramGranularity = 50;
+    int _EchogramGranularity = 200;
     [Export]
-    /// <summary>The length (in milliseconds) of each entry in the echogram. Defaults to 50ms</summary>
+    /// <summary>The length (in milliseconds) of each entry in the echogram</summary>
     public int EchogramGranularity
     {
         get => _EchogramGranularity;

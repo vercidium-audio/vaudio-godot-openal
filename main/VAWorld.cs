@@ -8,10 +8,16 @@ public partial class VAWorld : Node
 
     public vaudio.Emitter CreateEmitter(VAEmitter node, Action OnRaytracingComplete, Action<vaudio.Emitter> OnRaytracedByAnotherEmitter)
     {
+        // RaytraceOnce emitters cast their rays once and are done — freeze their position at that
+        // moment (e.g. a dodgeball impact SFX) instead of tracking the node forever afterward.
+        var position = node.RaytraceOnce
+            ? (vaudio.IPosition)ToVAudio(node.GlobalPosition)
+            : new vaudio.FuncPosition(() => ToVAudio(node.GlobalPosition));
+
         var emitter = new vaudio.Emitter
         {
             Name = node.Name,
-            Position = new vaudio.FuncPosition(() => ToVAudio(node.GlobalPosition)),
+            Position = position,
             OnRaytracingComplete = OnRaytracingComplete,
             OnRaytracedByAnotherEmitter = OnRaytracedByAnotherEmitter,
 
@@ -19,6 +25,7 @@ public partial class VAWorld : Node
             ReverbRayCount = node.ReverbRayCount,
             ReverbBounceCount = node.ReverbBounceCount,
             ReverbEnergyCap = node.ReverbEnergyCap,
+            MaxVolume = node.MaxVolume,
             MaxEchogramTime = node.MaxEchogramTime,
             EchogramGranularity = node.EchogramGranularity,
             AffectsGroupedEAX = node.AffectsGroupedEAX,
@@ -59,7 +66,6 @@ public partial class VAWorld : Node
             RefreshDistanceThreshold = node.RefreshDistanceThreshold,
             ScatteringSeed = node.ScatteringSeed,
             ClampPosition = node.ClampPosition,
-            ReservedEmitterTargets = node.ReservedEmitterTargets,
         };
 
         world.AddEmitter(emitter);
@@ -95,8 +101,24 @@ public partial class VAWorld : Node
     {
         Debug.Assert(emitter != null);
 
-        emitters.Add(emitter);
-        listener.RemoveTarget(emitter);
+        // Ignore if already queued for removal
+        if (emitter.PendingRemoval)
+            return;
+
+        if (emitter.ReverbEnabled && emitter.AffectsGroupedEAX)
+        {
+            // Capture the old callback (if any)
+            var existingCallback = emitter.OnRemoved;
+
+            emitter.OnRemoved = () =>
+            {
+                // Remove it once its reverb tail has finished
+                emitters.Remove(emitter);
+                listener.RemoveTarget(emitter);
+                existingCallback?.Invoke();
+            };
+        }
+
         world.RemoveEmitter(emitter);
     }
 
