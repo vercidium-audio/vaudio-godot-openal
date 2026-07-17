@@ -25,10 +25,10 @@ public partial class VAWorld : Node
             ReverbRayCount = node.ReverbRayCount,
             ReverbBounceCount = node.ReverbBounceCount,
             ReverbEnergyCap = node.ReverbEnergyCap,
+            MaxVolume = node.MaxVolume,
             MaxEchogramTime = node.MaxEchogramTime,
             EchogramGranularity = node.EchogramGranularity,
             AffectsGroupedEAX = node.AffectsGroupedEAX,
-            AffectsEAXAfterRemoval = node.AffectsEAXAfterRemoval,
             HasRelativeReverb = node.HasRelativeReverb,
             RelativeReverbInnerThreshold = node.RelativeReverbInnerThreshold,
             RelativeReverbOuterThreshold = node.RelativeReverbOuterThreshold,
@@ -66,7 +66,6 @@ public partial class VAWorld : Node
             RefreshDistanceThreshold = node.RefreshDistanceThreshold,
             ScatteringSeed = node.ScatteringSeed,
             ClampPosition = node.ClampPosition,
-            ReservedEmitterTargets = node.ReservedEmitterTargets,
         };
 
         world.AddEmitter(emitter);
@@ -102,15 +101,23 @@ public partial class VAWorld : Node
     {
         Debug.Assert(emitter != null);
 
-        // Don't untarget/forget the emitter yet: if it's going into a pending-removal reverb tail,
-        // it must keep being raytraced as a target of the listener until it's actually gone.
-        var existingCallback = emitter.OnEmitterRemoved;
-        emitter.OnEmitterRemoved = () =>
+        // Ignore if already queued for removal
+        if (emitter.PendingRemoval)
+            return;
+
+        if (emitter.ReverbEnabled && emitter.AffectsGroupedEAX)
         {
-            emitters.Remove(emitter);
-            listener.RemoveTarget(emitter);
-            existingCallback?.Invoke();
-        };
+            // Capture the old callback (if any)
+            var existingCallback = emitter.OnRemoved;
+
+            emitter.OnRemoved = () =>
+            {
+                // Remove it once its reverb tail has finished
+                emitters.Remove(emitter);
+                listener.RemoveTarget(emitter);
+                existingCallback?.Invoke();
+            };
+        }
 
         world.RemoveEmitter(emitter);
     }

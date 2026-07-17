@@ -65,7 +65,7 @@ public partial class VAEmitter : Node3D
             throw new InvalidOperationException("Emitter already created");
 
         emitter = vercidiumAudio.CreateEmitter(this, OnRaytracingComplete, OnRaytracedByAnotherEmitter);
-        emitter.OnEmitterRemoved = OnEmitterRemoved;
+        emitter.OnRemoved = OnEmitterRemoved;
     }
 
     public void RemoveEmitter()

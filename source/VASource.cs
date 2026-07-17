@@ -79,11 +79,11 @@ public partial class VASource : ALSource3D
             // Reverb
             ReverbRayCount = ReverbRayCount,
             ReverbBounceCount = ReverbBounceCount,
-            ReverbEnergyCap = _ReverbEnergyCap,
+            ReverbEnergyCap = ReverbEnergyCap,
+            MaxVolume = MaxVolume,
             MaxEchogramTime = MaxEchogramTime,
             EchogramGranularity = EchogramGranularity,
             AffectsGroupedEAX = AffectsGroupedEAX,
-            AffectsEAXAfterRemoval = AffectsEAXAfterRemoval,
             HasRelativeReverb = false,
 
             // Muffling
@@ -119,7 +119,6 @@ public partial class VASource : ALSource3D
             RefreshDistanceThreshold = RefreshDistanceThreshold,
             ScatteringSeed = ScatteringSeed,
             ClampPosition = ClampPosition,
-            ReservedEmitterTargets = 0,
         };
 
         AddChild(emitter);
@@ -159,11 +158,6 @@ public partial class VASource : ALSource3D
         {
             PlayWhenRaytracingCompletes = true;
             return false;
-        }
-
-        if (emitter.AffectsEAXAfterRemoval)
-        {
-            Log($"Playing dodgeball sound with GroupedEAXIndex {emitter.GroupedEAXIndex}");
         }
 
         return played = base.Play();

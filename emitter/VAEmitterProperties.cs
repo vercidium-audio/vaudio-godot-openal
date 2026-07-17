@@ -53,9 +53,28 @@ public partial class VAEmitter : Node3D
         }
     }
 
+    float _MaxVolume = 1.0f;
+
+    [Export(PropertyHint.Range, "0.0,1.0")]
+    /// <summary>
+    /// The loudest linear volume (0–1) this emitter's dry source will ever be played at by the consuming application. Used to estimate how long the emitter's reverb tail stays audible - a quieter source reaches an inaudible reverb tail sooner. Defaults to 1 (full volume)
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when the value is NaN, Infinity, less than 0 or greater than 1</exception>
+    public float MaxVolume
+    {
+        get => _MaxVolume;
+        set
+        {
+            _MaxVolume = value;
+
+            if (emitter != null)
+                emitter.MaxVolume = _MaxVolume;
+        }
+    }
+
     int _MaxEchogramTime = 5000;
     [Export]
-    /// <summary>How long (in milliseconds) the echogram records data for. Returning reverb rays after this period will be ignored. Defaults to 5000ms</summary>
+    /// <summary>How long (in milliseconds) the echogram records data for. Returning reverb rays after this period will be ignored</summary>
     public int MaxEchogramTime
     {
         get => _MaxEchogramTime;
@@ -70,9 +89,9 @@ public partial class VAEmitter : Node3D
         }
     }
 
-    int _EchogramGranularity = 50;
+    int _EchogramGranularity = 200;
     [Export]
-    /// <summary>The length (in milliseconds) of each entry in the echogram. Defaults to 50ms</summary>
+    /// <summary>The length (in milliseconds) of each entry in the echogram</summary>
     public int EchogramGranularity
     {
         get => _EchogramGranularity;
@@ -101,24 +120,6 @@ public partial class VAEmitter : Node3D
 
             if (emitter != null)
                 emitter.AffectsGroupedEAX = value;
-        }
-    }
-
-    bool _AffectsEAXAfterRemoval = true;
-    [Export]
-    /// <summary>
-    /// Controls whether this Emitter's EAX continues to influence grouped EAX for a short time after it is removed from the
-    /// world, fading out over its reverb tail instead of disappearing instantly. Useful for short sounds with long reverb tails
-    /// </summary>
-    public bool AffectsEAXAfterRemoval
-    {
-        get => _AffectsEAXAfterRemoval;
-        set
-        {
-            _AffectsEAXAfterRemoval = value;
-
-            if (emitter != null)
-                emitter.AffectsEAXAfterRemoval = value;
         }
     }
 
@@ -514,23 +515,6 @@ public partial class VAEmitter : Node3D
 
             if (emitter != null)
                 emitter.Type = value;
-        }
-    }
-
-    int _ReservedEmitterTargets;
-    [Export]
-    /// <summary>
-    /// The number of emitters that are allocated ahead of time, to prevent runtime allocations. Clamped to minimum of 0
-    /// </summary>
-    public int ReservedEmitterTargets
-    {
-        get => _ReservedEmitterTargets;
-        set
-        {
-            _ReservedEmitterTargets = value;
-
-            if (emitter != null)
-                emitter.ReservedEmitterTargets = value;
         }
     }
 
