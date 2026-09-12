@@ -499,35 +499,20 @@ public partial class VAEmitter
 
     [ExportGroup("Advanced")]
 
-    int _Type;
-    /// <summary>User-defined type for this emitter</summary>
-    [Export]
-    public int Type
-    {
-        get => _Type;
-        set
-        {
-            _Type = value;
-
-            if (emitter != null)
-                emitter.Type = value;
-        }
-    }
-
-    int _RefreshRayCount = 16;
+    int _TrailRefreshCount = 16;
     /// <summary>
     /// The number of trails that are rebuilt from scratch each frame to prevent staleness when the listener moves. Clamped to minimum of 0.
     /// </summary>
     [Export]
-    public int RefreshRayCount
+    public int TrailRefreshCount
     {
-        get => _RefreshRayCount;
+        get => _TrailRefreshCount;
         set
         {
-            _RefreshRayCount = value;
+            _TrailRefreshCount = value;
 
             if (emitter != null)
-                emitter.RefreshRayCount = value;
+                emitter.TrailRefreshCount = value;
         }
     }
 
